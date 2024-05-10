@@ -24,6 +24,8 @@ import Aboutus from '../Screen/Aboutus';
 import Package from '../Screen/Package';
 import PackageBook from '../Screen/PackageBook';
 import Contact from '../Screen/Contact';
+import Confirmlocation from '../Screen/Confirmlocation';
+import Connectingdriver from '../Screen/Connectingdriver';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -117,6 +119,16 @@ export default function Navigation() {
         <Stack.Screen
           name="BookNow"
           component={BookNow}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Confirmlocation"
+          component={Confirmlocation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Connectingdriver"
+          component={Connectingdriver}
           options={{headerShown: false}}
         />
         <Stack.Screen

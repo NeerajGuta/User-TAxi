@@ -150,6 +150,25 @@
                     }
                 },
                 {
+                    "source": "D:\\Raghavendra_Chaubey\\TAxi_App\\Taxi_UserApp\\node_modules\\@react-native-community\\datetimepicker\\android\\build\\intermediates\\packaged_res\\debug\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,6,9,10,13",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "100,181,389,572,653,861",
+                        "endLines": "2,5,8,9,12,15",
+                        "endColumns": "80,12,12,80,12,12",
+                        "endOffsets": "176,384,567,648,856,1039"
+                    },
+                    "to": {
+                        "startLines": "5975,5976,5979,5982,5983,5986",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "423066,423147,423355,423538,423619,423827",
+                        "endLines": "5975,5978,5981,5982,5985,5988",
+                        "endColumns": "80,12,12,80,12,12",
+                        "endOffsets": "423142,423350,423533,423614,423822,424005"
+                    }
+                },
+                {
                     "source": "C:\\Users\\DELL\\.gradle\\caches\\transforms-3\\933cca3d682df19ab6b85bbd4417e041\\transformed\\jetified-viewpager2-1.0.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -224,25 +243,6 @@
                     }
                 },
                 {
-                    "source": "D:\\Raghavendra_Chaubey\\Taxi\\android\\app\\src\\main\\res\\values\\styles.xml",
-                    "from": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "54",
-                        "endLines": "6",
-                        "endColumns": "12",
-                        "endOffsets": "267"
-                    },
-                    "to": {
-                        "startLines": "2151",
-                        "startColumns": "4",
-                        "startOffsets": "158394",
-                        "endLines": "2154",
-                        "endColumns": "12",
-                        "endOffsets": "158572"
-                    }
-                },
-                {
                     "source": "C:\\Users\\DELL\\.gradle\\caches\\transforms-3\\57875db857c52963776a564122dcb84b\\transformed\\jetified-startup-runtime-1.1.1\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -260,22 +260,22 @@
                     }
                 },
                 {
-                    "source": "D:\\Raghavendra_Chaubey\\Taxi\\node_modules\\@react-native-community\\datetimepicker\\android\\build\\intermediates\\packaged_res\\debug\\values\\values.xml",
+                    "source": "D:\\Raghavendra_Chaubey\\TAxi_App\\Taxi_UserApp\\node_modules\\react-native-date-picker\\android\\build\\intermediates\\packaged_res\\debug\\values\\values.xml",
                     "from": {
-                        "startLines": "2,3,6,9,10,13",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "100,181,389,572,653,861",
-                        "endLines": "2,5,8,9,12,15",
-                        "endColumns": "80,12,12,80,12,12",
-                        "endOffsets": "176,384,567,648,856,1039"
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,16,19,27,30,54",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "100,158,215,270,327,371,434,483,542,598,643,700,823,909,1276,1407,2235",
+                        "endLines": "2,3,4,5,6,7,8,9,10,11,12,15,18,26,29,53,57",
+                        "endColumns": "57,56,54,56,43,62,48,58,55,44,56,12,12,12,12,24,24",
+                        "endOffsets": "153,210,265,322,366,429,478,537,593,638,695,818,904,1271,1402,2230,2361"
                     },
                     "to": {
-                        "startLines": "5975,5976,5979,5982,5983,5986",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "423066,423147,423355,423538,423619,423827",
-                        "endLines": "5975,5978,5981,5982,5985,5988",
-                        "endColumns": "80,12,12,80,12,12",
-                        "endOffsets": "423142,423350,423533,423614,423822,424005"
+                        "startLines": "1900,1960,1961,1971,1972,2018,2019,2020,2089,2118,2121,5509,5512,9219,9227,11883,12781",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "126969,134505,134562,135496,135553,141534,141597,141646,152185,155903,156299,391989,392112,642316,642683,755271,787738",
+                        "endLines": "1900,1960,1961,1971,1972,2018,2019,2020,2089,2118,2121,5511,5514,9226,9229,11906,12784",
+                        "endColumns": "57,56,54,56,43,62,48,58,55,44,56,12,12,12,12,24,24",
+                        "endOffsets": "127022,134557,134612,135548,135592,141592,141641,141700,152236,155943,156351,392107,392193,642678,642809,756094,787864"
                     }
                 },
                 {
@@ -314,25 +314,6 @@
                         "endLines": "577,578,579,580,581,582,583,584,1942,1943,1944,1945,1946,1947,1948,1949,1951,1952,1953,1954,1955,1956,1957,1958,1959,11131,12101",
                         "endColumns": "89,79,89,89,79,80,79,79,104,180,124,106,179,122,115,102,187,104,180,124,174,147,62,61,78,20,20",
                         "endOffsets": "30431,30511,30601,30691,30771,30852,30932,31012,132272,132453,132578,132685,132865,132988,133104,133207,133562,133667,133848,133973,134148,134296,134359,134421,134500,727875,764096"
-                    }
-                },
-                {
-                    "source": "D:\\Raghavendra_Chaubey\\Taxi\\node_modules\\react-native-date-picker\\android\\build\\intermediates\\packaged_res\\debug\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,16,19,27,30,54",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "100,158,215,270,327,371,434,483,542,598,643,700,823,909,1276,1407,2235",
-                        "endLines": "2,3,4,5,6,7,8,9,10,11,12,15,18,26,29,53,57",
-                        "endColumns": "57,56,54,56,43,62,48,58,55,44,56,12,12,12,12,24,24",
-                        "endOffsets": "153,210,265,322,366,429,478,537,593,638,695,818,904,1271,1402,2230,2361"
-                    },
-                    "to": {
-                        "startLines": "1900,1960,1961,1971,1972,2018,2019,2020,2089,2118,2121,5509,5512,9219,9227,11883,12781",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "126969,134505,134562,135496,135553,141534,141597,141646,152185,155903,156299,391989,392112,642316,642683,755271,787738",
-                        "endLines": "1900,1960,1961,1971,1972,2018,2019,2020,2089,2118,2121,5511,5514,9226,9229,11906,12784",
-                        "endColumns": "57,56,54,56,43,62,48,58,55,44,56,12,12,12,12,24,24",
-                        "endOffsets": "127022,134557,134612,135548,135592,141592,141641,141700,152236,155943,156351,392107,392193,642678,642809,756094,787864"
                     }
                 },
                 {
@@ -446,23 +427,6 @@
                     }
                 },
                 {
-                    "source": "D:\\Raghavendra_Chaubey\\Taxi\\android\\app\\src\\main\\res\\values\\strings.xml",
-                    "from": {
-                        "startLines": "1",
-                        "startColumns": "4",
-                        "startOffsets": "16",
-                        "endColumns": "41",
-                        "endOffsets": "53"
-                    },
-                    "to": {
-                        "startLines": "1902",
-                        "startColumns": "4",
-                        "startOffsets": "127110",
-                        "endColumns": "41",
-                        "endOffsets": "127147"
-                    }
-                },
-                {
                     "source": "C:\\Users\\DELL\\.gradle\\caches\\transforms-3\\345ebcb3e4094628456bcdee8e74a5da\\transformed\\transition-1.2.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11",
@@ -499,20 +463,39 @@
                     }
                 },
                 {
-                    "source": "D:\\Raghavendra_Chaubey\\Taxi\\android\\app\\build\\generated\\res\\resValues\\debug\\values\\gradleResValues.xml",
+                    "source": "D:\\Raghavendra_Chaubey\\TAxi_App\\Taxi_UserApp\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
-                        "startLines": "6,8",
-                        "startColumns": "4,4",
-                        "startOffsets": "159,265",
-                        "endColumns": "63,68",
-                        "endOffsets": "218,329"
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "54",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "267"
                     },
                     "to": {
-                        "startLines": "1864,1865",
-                        "startColumns": "4,4",
-                        "startOffsets": "124406,124470",
-                        "endColumns": "63,68",
-                        "endOffsets": "124465,124534"
+                        "startLines": "2151",
+                        "startColumns": "4",
+                        "startOffsets": "158394",
+                        "endLines": "2154",
+                        "endColumns": "12",
+                        "endOffsets": "158572"
+                    }
+                },
+                {
+                    "source": "D:\\Raghavendra_Chaubey\\TAxi_App\\Taxi_UserApp\\android\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endColumns": "41",
+                        "endOffsets": "53"
+                    },
+                    "to": {
+                        "startLines": "1902",
+                        "startColumns": "4",
+                        "startOffsets": "127110",
+                        "endColumns": "41",
+                        "endOffsets": "127147"
                     }
                 },
                 {
@@ -551,6 +534,23 @@
                         "endLines": "26,571,572,573,574,972,973,974,2182,5502,5505,5508,10234",
                         "endColumns": "51,60,61,61,63,58,56,53,12,12,12,12,24",
                         "endOffsets": "1301,30027,30089,30151,30215,59268,59325,59379,160437,391730,391856,391984,677686"
+                    }
+                },
+                {
+                    "source": "D:\\Raghavendra_Chaubey\\TAxi_App\\Taxi_UserApp\\android\\app\\build\\generated\\res\\resValues\\debug\\values\\gradleResValues.xml",
+                    "from": {
+                        "startLines": "6,8",
+                        "startColumns": "4,4",
+                        "startOffsets": "159,265",
+                        "endColumns": "63,68",
+                        "endOffsets": "218,329"
+                    },
+                    "to": {
+                        "startLines": "1864,1865",
+                        "startColumns": "4,4",
+                        "startOffsets": "124406,124470",
+                        "endColumns": "63,68",
+                        "endOffsets": "124465,124534"
                     }
                 },
                 {

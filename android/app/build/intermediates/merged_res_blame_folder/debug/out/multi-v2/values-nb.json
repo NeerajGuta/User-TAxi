@@ -4,6 +4,23 @@
             "outputFile": "com.taxi.app-mergeDebugResources-40:/values-nb/values-nb.xml",
             "map": [
                 {
+                    "source": "D:\\Raghavendra_Chaubey\\TAxi_App\\Taxi_UserApp\\node_modules\\react-native-date-picker\\android\\build\\intermediates\\packaged_res\\debug\\values-nb\\values-nb.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,111,166,219,274,316,378,427,484,531,577",
+                        "endColumns": "55,54,52,54,41,61,48,56,46,45,52",
+                        "endOffsets": "106,161,214,269,311,373,422,479,526,572,625"
+                    },
+                    "to": {
+                        "startLines": "34,64,65,69,70,92,93,94,131,149,152",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "3013,6262,6317,6601,6656,8206,8268,8317,11153,12542,12736",
+                        "endColumns": "55,54,52,54,41,61,48,56,46,45,52",
+                        "endOffsets": "3064,6312,6365,6651,6693,8263,8312,8369,11195,12583,12784"
+                    }
+                },
+                {
                     "source": "C:\\Users\\DELL\\.gradle\\caches\\transforms-3\\13659b94c66de92d98d7f8af61234b95\\transformed\\core-1.9.0\\res\\values-nb\\values-nb.xml",
                     "from": {
                         "startLines": "2",
@@ -86,23 +103,6 @@
                         "startOffsets": "311,414,509,623,709,809,922,999,1074,1165,1258,1352,1446,1546,1639,1734,1832,1923,2014,2092,2195,2293,2389,2493,2592,2693,2846,11590",
                         "endColumns": "102,94,113,85,99,112,76,74,90,92,93,93,99,92,94,97,90,90,77,102,97,95,103,98,100,152,96,79",
                         "endOffsets": "409,504,618,704,804,917,994,1069,1160,1253,1347,1441,1541,1634,1729,1827,1918,2009,2087,2190,2288,2384,2488,2587,2688,2841,2938,11665"
-                    }
-                },
-                {
-                    "source": "D:\\Raghavendra_Chaubey\\Taxi\\node_modules\\react-native-date-picker\\android\\build\\intermediates\\packaged_res\\debug\\values-nb\\values-nb.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,111,166,219,274,316,378,427,484,531,577",
-                        "endColumns": "55,54,52,54,41,61,48,56,46,45,52",
-                        "endOffsets": "106,161,214,269,311,373,422,479,526,572,625"
-                    },
-                    "to": {
-                        "startLines": "34,64,65,69,70,92,93,94,131,149,152",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "3013,6262,6317,6601,6656,8206,8268,8317,11153,12542,12736",
-                        "endColumns": "55,54,52,54,41,61,48,56,46,45,52",
-                        "endOffsets": "3064,6312,6365,6651,6693,8263,8312,8369,11195,12583,12784"
                     }
                 },
                 {

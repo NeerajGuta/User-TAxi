@@ -51,7 +51,7 @@ const SearchVehicle = ({navigation}) => {
   };
 
   const handleNavigation = () => {
-    navigation.navigate('BookNow');
+    navigation.navigate('Confirmlocation');
   };
 
   const data = [
