@@ -19,8 +19,16 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
+import {
+  responsiveHeight,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+} from 'react-native-responsive-dimensions';
 
-const SearchVehicle = ({navigation}) => {
+const SearchVehicle = ({navigation, route}) => {
+  const {pickupLocation, dropLocation} = route.params;
+  console.log(pickupLocation.data.description, 'getlocationpickupLocation');
+  console.log(dropLocation, 'getlocationdropLocation');
   const [acc, setAcc] = useState(true);
   const [acc1, setAcc1] = useState(false);
   const [acc2, setAcc2] = useState(false);
@@ -125,7 +133,7 @@ const SearchVehicle = ({navigation}) => {
             />
             <View style={styles.input}>
               <TextInput
-                placeholder="Pickup location "
+                placeholder={`${pickupLocation?.data?.description}`}
                 placeholderTextColor={Color.black}
                 keyboardType="default"
                 style={{
@@ -148,7 +156,7 @@ const SearchVehicle = ({navigation}) => {
             />
             <View style={styles.input}>
               <TextInput
-                placeholder="Drop location "
+                placeholder={`${dropLocation?.data?.description}`}
                 placeholderTextColor={Color.black}
                 keyboardType="default"
                 style={{
@@ -327,11 +335,11 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   input: {
-    width: '100%',
-    height: 51,
+    width: responsiveScreenWidth(100),
+    height: responsiveHeight(8),
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 30,
+    paddingLeft: 25,
   },
   icons: {
     position: 'absolute',

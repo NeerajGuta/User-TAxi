@@ -16,6 +16,10 @@
         "source": "com.taxi.app-main-44:/drawable-mdpi/src_assets_map.png"
     },
     {
+        "merged": "com.taxi.app-merged_res-42:/drawable-mdpi_src_assets_localicon.png.flat",
+        "source": "com.taxi.app-main-44:/drawable-mdpi/src_assets_localicon.png"
+    },
+    {
         "merged": "com.taxi.app-merged_res-42:/drawable-mdpi_node_modules_reactnativecheckbox_img_ic_check_box_outline_blank.png.flat",
         "source": "com.taxi.app-main-44:/drawable-mdpi/node_modules_reactnativecheckbox_img_ic_check_box_outline_blank.png"
     },
@@ -46,6 +50,10 @@
     {
         "merged": "com.taxi.app-merged_res-42:/mipmap-xhdpi_ic_launcher_round.png.flat",
         "source": "com.taxi.app-main-44:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.taxi.app-merged_res-42:/drawable-mdpi_src_assets_oustationicon.png.flat",
+        "source": "com.taxi.app-main-44:/drawable-mdpi/src_assets_oustationicon.png"
     },
     {
         "merged": "com.taxi.app-merged_res-42:/drawable-xhdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
@@ -108,6 +116,14 @@
         "source": "com.taxi.app-main-44:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
     },
     {
+        "merged": "com.taxi.app-merged_res-42:/drawable-mdpi_node_modules_reactnativegoogleplacesautocomplete_images_powered_by_google_on_white.png.flat",
+        "source": "com.taxi.app-main-44:/drawable-mdpi/node_modules_reactnativegoogleplacesautocomplete_images_powered_by_google_on_white.png"
+    },
+    {
+        "merged": "com.taxi.app-merged_res-42:/drawable-xhdpi_node_modules_reactnativegoogleplacesautocomplete_images_powered_by_google_on_white.png.flat",
+        "source": "com.taxi.app-main-44:/drawable-xhdpi/node_modules_reactnativegoogleplacesautocomplete_images_powered_by_google_on_white.png"
+    },
+    {
         "merged": "com.taxi.app-merged_res-42:/drawable_rn_edit_text_material.xml.flat",
         "source": "com.taxi.app-main-44:/drawable/rn_edit_text_material.xml"
     },
@@ -124,8 +140,16 @@
         "source": "com.taxi.app-main-44:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
+        "merged": "com.taxi.app-merged_res-42:/drawable-xxhdpi_node_modules_reactnativegoogleplacesautocomplete_images_powered_by_google_on_white.png.flat",
+        "source": "com.taxi.app-main-44:/drawable-xxhdpi/node_modules_reactnativegoogleplacesautocomplete_images_powered_by_google_on_white.png"
+    },
+    {
         "merged": "com.taxi.app-merged_res-42:/drawable-mdpi_src_assets_car.png.flat",
         "source": "com.taxi.app-main-44:/drawable-mdpi/src_assets_car.png"
+    },
+    {
+        "merged": "com.taxi.app-merged_res-42:/drawable-mdpi_src_assets_driverimage.png.flat",
+        "source": "com.taxi.app-main-44:/drawable-mdpi/src_assets_driverimage.png"
     },
     {
         "merged": "com.taxi.app-merged_res-42:/mipmap-mdpi_ic_launcher.png.flat",

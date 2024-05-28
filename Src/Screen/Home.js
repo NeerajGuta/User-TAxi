@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {Picker} from '@react-native-picker/picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../Constant/Color';
 import DatePicker from 'react-native-date-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -23,6 +23,12 @@ import Package from './Package';
 import Geolocation from '@react-native-community/geolocation';
 import MapView, {Marker, PROVIDER_GOOGLE, Polygon} from 'react-native-maps';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+} from 'react-native-responsive-dimensions';
 
 const Home = ({navigation, route}) => {
   const [selectedLanguage, setSelectedLanguage] = useState();
@@ -37,7 +43,10 @@ const Home = ({navigation, route}) => {
     setDate(newDate);
   };
   const handlePress = () => {
-    navigation.navigate('SearchVehicle');
+    navigation.navigate('Local');
+  };
+  const handleOutstation = () => {
+    navigation.navigate('Outstation');
   };
   const handlePressPackage = () => {
     navigation.navigate('Package');
@@ -121,14 +130,14 @@ const Home = ({navigation, route}) => {
           const {latitude, longitude} = position.coords;
           setlongi(longitude);
           setlati(latitude);
-          // if (mapRef) {
-          //   mapRef.current.animateToRegion({
-          //     latitude: latitude,
-          //     longitude: longitude,
-          //     latitudeDelta: 0.005,
-          //     longitudeDelta: 0.005,
-          //   });
-          // }
+          if (mapRef) {
+            mapRef.current.animateToRegion({
+              latitude: latitude,
+              longitude: longitude,
+              latitudeDelta: 0.005,
+              longitudeDelta: 0.005,
+            });
+          }
         },
 
         error => {
@@ -183,7 +192,7 @@ const Home = ({navigation, route}) => {
       <ScrollView>
         <View style={{flex: 1}}>
           <View>
-            {/* <MapView
+            <MapView
               ref={mapRef}
               style={styles.map}
               initialRegion={position}
@@ -194,8 +203,8 @@ const Home = ({navigation, route}) => {
               showsCompass={true}
               scrollEnabled={true}
               zoomEnabled={true}
-              height={280}
-              width={400}
+              height={responsiveScreenHeight(58)}
+              width={responsiveScreenWidth(100)}
               pitchEnabled={true}
               rotateEnabled={true}>
               {lati & longi ? (
@@ -206,21 +215,21 @@ const Home = ({navigation, route}) => {
                       latitude: parseFloat(lati),
                       longitude: parseFloat(longi),
                     }}>
-                    <Image
-                    style={{width: 20, height: 30}}
-                    source={require('../assets/images/man.png')}
-                  />
+                    {/* <Image
+                      style={{width: 20, height: 30}}
+                      source={require('../assets/images/man.png')}
+                    /> */}
                   </Marker>
                 </>
               ) : (
                 <></>
               )}
-            </MapView> */}
-            <Image
+            </MapView>
+            {/* <Image
               source={require('../Assets/map.png')}
               style={{height: 280, width: 400}}
               resizeMode="cover"
-            />
+            /> */}
             <View
               style={{
                 position: 'absolute',
@@ -253,7 +262,7 @@ const Home = ({navigation, route}) => {
                   style={acc ? styles.bond : styles.net}
                   onPress={handleChange1}>
                   <Image
-                    source={require('../Assets/car.png')}
+                    source={require('../Assets/local-icon.png')}
                     resizeMode="contain"
                     style={styles.carimage}
                   />
@@ -266,7 +275,7 @@ const Home = ({navigation, route}) => {
                   style={acc1 ? styles.bond : styles.net}
                   onPress={handleChange2}>
                   <Image
-                    source={require('../Assets/car.png')}
+                    source={require('../Assets/Oustation-icon.png')}
                     resizeMode="contain"
                     style={styles.carimage}
                   />
@@ -279,7 +288,7 @@ const Home = ({navigation, route}) => {
                   style={acc2 ? styles.bond : styles.net}
                   onPress={handleChange3}>
                   <Image
-                    source={require('../Assets/car.png')}
+                    source={require('../Assets/Oustation-icon.png')}
                     resizeMode="contain"
                     style={styles.carimage}
                   />
@@ -295,211 +304,61 @@ const Home = ({navigation, route}) => {
           <View style={styles.newContainer}>
             {acc ? (
               <>
-                <View>
-                  <View
-                    style={{
-                      marginHorizontal: 10,
-                    }}>
-                    <Text style={styles.text}>Select pick up location</Text>
-                    <View style={styles.picker}>
-                      {/* <GooglePlacesAutocomplete
-                        placeholder="Search"
-                        onPress={(data, details = null) => {
-                          // 'details' is provided when fetchDetails = true
-                          console.log(data, details);
-                        }}
-                        query={{
-                          key: 'AIzaSyACW1po0qU1jptIybBPGdFY-_MrycQPjfk',
-                          language: 'en',
-                        }}
-                      /> */}
-
-                      <Picker
-                        selectedValue={selectedLanguage}
-                        onValueChange={(itemValue, itemIndex) =>
-                          setSelectedLanguage(itemValue)
-                        }
-                        itemStyle={styles.pickerItem}>
-                        <Picker.Item label="Bangalore" value="Bangalore" />
-                        <Picker.Item label="Bangalore" value="Bangalore" />
-                      </Picker>
-                    </View>
-
-                    <Text style={styles.text}>Select Drop up location</Text>
-                    <View style={styles.picker}>
-                      <Picker
-                        selectedValue={selectedLanguage}
-                        onValueChange={(itemValue, itemIndex) =>
-                          setSelectedLanguage(itemValue)
-                        }
-                        itemStyle={styles.pickerItem}>
-                        <Picker.Item label="Bangalore" value="Bangalore" />
-                        <Picker.Item label="Bangalore" value="Bangalore" />
-                      </Picker>
-                    </View>
-                  </View>
+                <TouchableOpacity onPress={handlePress}>
                   <View
                     style={{
                       flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginHorizontal: 10,
-                      marginBottom: 5,
+                      alignItems: 'center',
+                      backgroundColor: COLORS.grey,
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      borderColor: COLORS.grey,
+                      paddingHorizontal: 10,
+                      height: responsiveHeight(7),
                     }}>
-                    <View>
-                      <Text style={styles.text}>Pick up date</Text>
-                      <TouchableOpacity onPress={() => setModalVisible(true)}>
-                        <Text style={styles.dates}>{date.toDateString()}</Text>
-                      </TouchableOpacity>
-                      <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                          setModalVisible(false);
-                        }}>
-                        <View style={styles.centeredView}>
-                          <View style={styles.modalView}>
-                            <DatePicker
-                              mode="date"
-                              date={date}
-                              onDateChange={handleDateChange}
-                            />
-                            <Button
-                              title="Close"
-                              onPress={() => setModalVisible(false)}
-                            />
-                          </View>
-                        </View>
-                      </Modal>
-                    </View>
-                    <View>
-                      <Text style={styles.text}>Pick up Time</Text>
-                      <TouchableOpacity onPress={showTimepicker}>
-                        <Text style={styles.dates}>{time.toTimeString()}</Text>
-                      </TouchableOpacity>
-                      {showTimePicker && (
-                        <DateTimePicker
-                          testID="dateTimePicker"
-                          value={time}
-                          mode="time"
-                          is24Hour={true}
-                          display="default"
-                          onChange={onChange}
-                        />
-                      )}
-                    </View>
+                    <Icon
+                      name="search"
+                      size={20}
+                      color={COLORS.black}
+                      style={styles.icon}
+                    />
+                    <Text style={styles.textInput}>Where are you going</Text>
                   </View>
-
-                  <View style={{marginHorizontal: 20}}>
-                    <AnimatedButton
-                      title="Search"
-                      onPress={handlePress}></AnimatedButton>
-                  </View>
-                </View>
+                </TouchableOpacity>
               </>
             ) : (
               <>
                 {acc1 ? (
                   <>
-                    <View>
-                      <View
-                        style={{
-                          marginHorizontal: 10,
-                        }}>
-                        <Text style={styles.text}>Select pick up location</Text>
-                        <View style={styles.picker}>
-                          <Picker
-                            selectedValue={selectedLanguage}
-                            onValueChange={(itemValue, itemIndex) =>
-                              setSelectedLanguage(itemValue)
-                            }
-                            itemStyle={styles.pickerItem}>
-                            <Picker.Item label="Bangalore" value="Bangalore" />
-                            <Picker.Item label="Bangalore" value="Bangalore" />
-                          </Picker>
-                        </View>
-
-                        <Text style={styles.text}>Select Drop up location</Text>
-                        <View style={styles.picker}>
-                          <Picker
-                            selectedValue={selectedLanguage}
-                            onValueChange={(itemValue, itemIndex) =>
-                              setSelectedLanguage(itemValue)
-                            }
-                            itemStyle={styles.pickerItem}>
-                            <Picker.Item label="Bangalore" value="Bangalore" />
-                            <Picker.Item label="Bangalore" value="Bangalore" />
-                          </Picker>
-                        </View>
-                      </View>
+                    <TouchableOpacity onPress={handleOutstation}>
                       <View
                         style={{
                           flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginHorizontal: 10,
-                          marginBottom: 5,
+                          alignItems: 'center',
+                          backgroundColor: COLORS.grey,
+                          borderRadius: 5,
+                          borderWidth: 1,
+                          borderColor: COLORS.grey,
+                          paddingHorizontal: 10,
+                          height: responsiveHeight(7),
                         }}>
-                        <View>
-                          <Text style={styles.text}>Pick up date</Text>
-                          <TouchableOpacity
-                            onPress={() => setModalVisible(true)}>
-                            <Text style={styles.dates}>
-                              {date.toDateString()}
-                            </Text>
-                          </TouchableOpacity>
-                          <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={modalVisible}
-                            onRequestClose={() => {
-                              setModalVisible(false);
-                            }}>
-                            <View style={styles.centeredView}>
-                              <View style={styles.modalView}>
-                                <DatePicker
-                                  mode="date"
-                                  date={date}
-                                  onDateChange={handleDateChange}
-                                />
-                                <Button
-                                  title="Close"
-                                  onPress={() => setModalVisible(false)}
-                                />
-                              </View>
-                            </View>
-                          </Modal>
-                        </View>
-                        <View>
-                          <Text style={styles.text}>Pick up Time</Text>
-                          <TouchableOpacity onPress={showTimepicker}>
-                            <Text style={styles.dates}>
-                              {time.toTimeString()}
-                            </Text>
-                          </TouchableOpacity>
-                          {showTimePicker && (
-                            <DateTimePicker
-                              testID="dateTimePicker"
-                              value={time}
-                              mode="time"
-                              is24Hour={true}
-                              display="default"
-                              onChange={onChange}
-                            />
-                          )}
-                        </View>
+                        <Icon
+                          name="search"
+                          size={20}
+                          color={COLORS.black}
+                          style={styles.icon}
+                        />
+                        <Text style={styles.textInput}>
+                          Where are you going
+                        </Text>
                       </View>
-                      <View style={{marginHorizontal: 20}}>
-                        <AnimatedButton
-                          title="Search"
-                          onPress={handlePress}></AnimatedButton>
-                      </View>
-                    </View>
+                    </TouchableOpacity>
                   </>
                 ) : (
                   <>
                     {acc2 ? (
                       <>
-                        <View>
+                        {/* <View>
                           <View
                             style={{
                               marginHorizontal: 10,
@@ -543,7 +402,7 @@ const Home = ({navigation, route}) => {
                               </Picker>
                             </View>
 
-                            {/* <Text style={styles.text}>
+                            <Text style={styles.text}>
                               Select Drop up location
                             </Text>
                             <View style={styles.picker}>
@@ -562,7 +421,7 @@ const Home = ({navigation, route}) => {
                                   value="Bangalore"
                                 />
                               </Picker>
-                            </View> */}
+                            </View>
                           </View>
                           <View
                             style={{
@@ -625,7 +484,7 @@ const Home = ({navigation, route}) => {
                               title="Search"
                               onPress={handlePressPackage}></AnimatedButton>
                           </View>
-                        </View>
+                        </View> */}
                       </>
                     ) : (
                       <></>
@@ -649,9 +508,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 50,
   },
+  textInput: {
+    fontSize: responsiveFontSize(2),
+    fontWeight: '600',
+    paddingHorizontal: 15,
+    color: COLORS.black,
+  },
   carimage: {
-    height: 25,
-    width: 35,
+    height: 50,
+    width: 50,
   },
   containttext: {
     fontSize: 14,
@@ -713,9 +578,7 @@ const styles = StyleSheet.create({
   },
   newContainer: {
     backgroundColor: 'white',
-    borderRadius: 10,
     padding: 5,
-    marginHorizontal: 5,
     borderWidth: 1,
     borderColor: '#dbd3d340',
     shadowColor: '#000',
@@ -767,7 +630,7 @@ const styles = StyleSheet.create({
     borderColor: '#dbd3d340',
   },
   conatintLocal: {
-    padding: 20,
+    paddingBottom: 10,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',

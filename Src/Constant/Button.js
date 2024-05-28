@@ -1,5 +1,10 @@
 import React, {useRef} from 'react';
 import {TouchableOpacity, Text, StyleSheet, Animated} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 const AnimatedButton = ({title, onPress}) => {
   const scaleValue = useRef(new Animated.Value(1)).current;
@@ -35,7 +40,9 @@ const AnimatedButton = ({title, onPress}) => {
         onPress={onPress}
         activeOpacity={1} // Disables the default opacity change on press
       >
-        <Text style={styles.text}>{title}</Text>
+        <LinearGradient colors={['#00a551', '#00a551', '#00a551']}>
+          <Text style={styles.text}>{title}</Text>
+        </LinearGradient>
       </TouchableOpacity>
     </Animated.View>
   );
@@ -45,14 +52,17 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#00a551',
     paddingHorizontal: 25,
-    paddingVertical: 12,
-    borderRadius: 20,
+    paddingVertical: 18,
     marginTop: 30,
+    width: responsiveWidth(65),
+    borderRadius: 5,
+    alignSelf: 'center',
   },
   text: {
     color: '#ffffff',
     fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 17,
   },
 });
 

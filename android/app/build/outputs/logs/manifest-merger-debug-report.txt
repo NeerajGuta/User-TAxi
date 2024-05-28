@@ -15,6 +15,7 @@ MERGED from [:react-native-date-picker] D:\Raghavendra_Chaubey\TAxi_App\Taxi_Use
 MERGED from [:react-native-gesture-handler] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-gesture-handler\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-get-location] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-get-location\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-image-picker] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-19:12
+MERGED from [:react-native-linear-gradient] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-maps] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-maps\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-pager-view] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-pager-view\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-reanimated] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-reanimated\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
@@ -264,6 +265,8 @@ MERGED from [:react-native-get-location] D:\Raghavendra_Chaubey\TAxi_App\Taxi_Us
 MERGED from [:react-native-get-location] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-get-location\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-image-picker] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-image-picker] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-linear-gradient] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-linear-gradient] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-maps] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-maps\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-maps] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-maps\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-pager-view] D:\Raghavendra_Chaubey\TAxi_App\Taxi_UserApp\node_modules\react-native-pager-view\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44

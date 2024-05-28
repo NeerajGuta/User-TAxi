@@ -26,6 +26,8 @@ import PackageBook from '../Screen/PackageBook';
 import Contact from '../Screen/Contact';
 import Confirmlocation from '../Screen/Confirmlocation';
 import Connectingdriver from '../Screen/Connectingdriver';
+import Local from '../Screen/Local';
+import Outstation from '../Screen/Outstation';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -96,6 +98,7 @@ export default function Navigation() {
           component={MyDrawer}
           options={{headerShown: false}}
         />
+
         <Stack.Screen
           name="TabtopView"
           component={TabtopView}
@@ -165,6 +168,16 @@ export default function Navigation() {
           name="Contact"
           component={Contact}
           options={{headerShown: true}}
+        />
+        <Stack.Screen
+          name="Local"
+          component={Local}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Outstation"
+          component={Outstation}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>
