@@ -36,9 +36,11 @@ import {
 } from 'react-native-responsive-dimensions';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import axios from 'axios';
+import {useFocusEffect} from '@react-navigation/native';
 
 const SearchVehicle = ({navigation, route}) => {
-  const {pickupLocation, dropLocation, lat, lng, latto, lngto} = route.params;
+  const {pickupLocation, dropLocation, lat, lng, latto, lngto, triptype} =
+    route.params;
   // console.log(pickupLocation.data.description, 'getlocationpickupLocation');
   // console.log(dropLocation.data.description, 'getlocationdropLocation');
   const mapRef = useRef();
@@ -52,20 +54,65 @@ const SearchVehicle = ({navigation, route}) => {
 
   const [pickupLocationdata, setpickupLocationdata] = useState('');
   const [dropLocationdata, setdropLocationdata] = useState('');
-  // console.log(
-  //   pickupLangi.latitude,
-  //   pickupLangi.longitude,
-  //   dropLangi.latitude,
-  //   dropLangi.latitude,
-  //   'pickupLangia[epf[es[flew[fdlc[ewskldf[vkeds[k',
-  // );
+
   const [acc, setAcc] = useState(true);
 
-  // ref
   const bottomSheetModalRef = useRef();
+  const marker1 = {
+    latitude: lat,
+    longitude: lng,
+  };
 
+  const marker2 = {latitude: latto, longitude: lngto};
+  const [minutes, setMinutes] = useState(0);
+  const [hour, sethour] = useState(0);
+  const [routecordinat, setroutecordinat] = useState([]);
+  const fetchRouteFromOSRM = async (origin, destination) => {
+    try {
+      const url = `https://router.project-osrm.org/route/v1/driving/${origin.longitude},${origin.latitude};${destination.longitude},${destination.latitude}?overview=full&geometries=geojson`;
+      console.log('Request URL:', url);
+
+      const response = await axios.get(url);
+
+      if (response.data.routes && response.data.routes.length > 0) {
+        const route = response.data.routes[0];
+        const coordinates = route.geometry.coordinates.map(([lng, lat]) => ({
+          latitude: lat,
+          longitude: lng,
+        }));
+        const distanceInKm = (route?.distance / 1000).toFixed(1); // 1 decimal place
+
+        // Convert duration to hours and minutes
+        const hours = Math.floor(route?.duration / 3600);
+        const minutes = Math.floor((route?.duration % 3600) / 60);
+        setpickupdistance(parseInt(distanceInKm));
+        // setpickuptime(duration);
+        // setLoading(false);
+        sethour(hours);
+        setMinutes(minutes);
+        console.log('Route Coordinates:', distanceInKm, hours, minutes);
+        setroutecordinat(coordinates);
+        return coordinates;
+      } else {
+        console.error('No route found.');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching route:', error.message);
+      return [];
+    }
+  };
+
+  // fetchRouteFromOSRM(marker1, marker2);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!routecordinat.length) {
+        fetchRouteFromOSRM(marker1, marker2);
+      }
+    }, [routecordinat, marker1, marker2, fetchRouteFromOSRM]),
+  );
   // variables
-  const snapPoints = useMemo(() => ['23%', '65%'], []);
+  const snapPoints = useMemo(() => ['23%', '70%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -76,16 +123,6 @@ const SearchVehicle = ({navigation, route}) => {
   }, []);
 
   const [accview, setAccview] = useState('');
-
-  const handleNavigation = () => {
-    navigation.navigate('Confirmlocation', {
-      totalCost,
-      pickupLocationdata,
-      pickupLangi,
-      dropLocationdata,
-      pickupdistance,
-    });
-  };
 
   const YOUR_GOOGLE_API_KEY = 'AIzaSyACW1po0qU1jptIybBPGdFY-_MrycQPjfk';
 
@@ -213,70 +250,84 @@ const SearchVehicle = ({navigation, route}) => {
 
   const [region, setRegion] = useState(null);
   const [polylineCoordinates, setPolylineCoordinates] = useState([]);
-
-  useEffect(() => {
-    if (
-      pickupLangi.latitude &&
-      pickupLangi.longitude &&
-      dropLangi.latitude &&
-      dropLangi.longitude
-    ) {
-      const midLatitude =
-        (parseFloat(pickupLangi.latitude) + parseFloat(dropLangi.latitude)) / 2;
-      const midLongitude =
-        (parseFloat(pickupLangi.longitude) + parseFloat(dropLangi.longitude)) /
-        2;
-
-      const latDelta =
-        Math.abs(
-          parseFloat(pickupLangi.latitude) - parseFloat(dropLangi.latitude),
-        ) * 2;
-      const longDelta =
-        Math.abs(
-          parseFloat(pickupLangi.longitude) - parseFloat(dropLangi.longitude),
-        ) * 2;
-
-      const newRegion = {
-        latitude: midLatitude,
-        longitude: midLongitude,
-        latitudeDelta: latDelta,
-        longitudeDelta: longDelta,
-      };
-
-      setRegion(newRegion);
-
-      // Animate to new region
-      if (mapRef.current) {
-        mapRef.current.animateToRegion(newRegion, 1000); // duration is in milliseconds
+  useFocusEffect(
+    React.useCallback(() => {
+      if (mapRef.current && lat && lng && latto && lngto) {
+        // Adjust the map to fit both markers
+        const coordinates = [
+          {latitude: parseFloat(lat), longitude: parseFloat(lng)}, // Pickup location
+          {latitude: parseFloat(latto), longitude: parseFloat(lngto)}, // Drop-off location
+        ];
+        mapRef.current.fitToCoordinates(coordinates, {
+          edgePadding: {top: 50, right: 50, bottom: 50, left: 50},
+          animated: true,
+        });
       }
+    }, [lat, lng, latto, lngto]),
+  );
+  // useEffect(() => {
+  //   if (
+  //     pickupLangi.latitude &&
+  //     pickupLangi.longitude &&
+  //     dropLangi.latitude &&
+  //     dropLangi.longitude
+  //   ) {
+  //     const midLatitude =
+  //       (parseFloat(pickupLangi.latitude) + parseFloat(dropLangi.latitude)) / 2;
+  //     const midLongitude =
+  //       (parseFloat(pickupLangi.longitude) + parseFloat(dropLangi.longitude)) /
+  //       2;
 
-      // Setting coordinates for polyline
-      const coordinates = [
-        {
-          latitude: parseFloat(pickupLangi.latitude),
-          longitude: parseFloat(pickupLangi.longitude),
-        },
-        {
-          latitude: parseFloat(dropLangi.latitude),
-          longitude: parseFloat(dropLangi.longitude),
-        },
-      ];
-      setPolylineCoordinates(coordinates);
+  //     const latDelta =
+  //       Math.abs(
+  //         parseFloat(pickupLangi.latitude) - parseFloat(dropLangi.latitude),
+  //       ) * 2;
+  //     const longDelta =
+  //       Math.abs(
+  //         parseFloat(pickupLangi.longitude) - parseFloat(dropLangi.longitude),
+  //       ) * 2;
 
-      // Get addresses
-      getGeocodingData(
-        pickupLangi.latitude,
-        pickupLangi.longitude,
-        setPickupAddress,
-      );
-      getGeocodingData(dropLangi.latitude, dropLangi.longitude, setDropAddress);
-    }
-  }, [
-    pickupLangi.latitude,
-    pickupLangi.longitude,
-    dropLangi.latitude,
-    dropLangi.longitude,
-  ]);
+  //     const newRegion = {
+  //       latitude: midLatitude,
+  //       longitude: midLongitude,
+  //       latitudeDelta: latDelta,
+  //       longitudeDelta: longDelta,
+  //     };
+
+  //     setRegion(newRegion);
+
+  //     // Animate to new region
+  //     if (mapRef.current) {
+  //       mapRef.current.animateToRegion(newRegion, 1000); // duration is in milliseconds
+  //     }
+
+  //     // Setting coordinates for polyline
+  //     const coordinates = [
+  //       {
+  //         latitude: parseFloat(pickupLangi.latitude),
+  //         longitude: parseFloat(pickupLangi.longitude),
+  //       },
+  //       {
+  //         latitude: parseFloat(dropLangi.latitude),
+  //         longitude: parseFloat(dropLangi.longitude),
+  //       },
+  //     ];
+  //     setPolylineCoordinates(coordinates);
+
+  //     // Get addresses
+  //     getGeocodingData(
+  //       pickupLangi.latitude,
+  //       pickupLangi.longitude,
+  //       setPickupAddress,
+  //     );
+  //     getGeocodingData(dropLangi.latitude, dropLangi.longitude, setDropAddress);
+  //   }
+  // }, [
+  //   pickupLangi.latitude,
+  //   pickupLangi.longitude,
+  //   dropLangi.latitude,
+  //   dropLangi.longitude,
+  // ]);
 
   const [data, setData] = useState([]);
   // console.log('data', data);
@@ -295,11 +346,29 @@ const SearchVehicle = ({navigation, route}) => {
   const totalCost =
     parseFloat(cabdata?.perkmfare) * parseInt(pickupdistance) +
     cabdata?.bookingfee +
-    cabdata?.cancellationcharge +
     cabdata?.servicecharge;
 
   // console.log('item', totalCost);
-
+  const handleNavigation = () => {
+    navigation.navigate('Confirmlocation', {
+      totalCost,
+      pickupLocationdata,
+      pickupLangi,
+      dropLocationdata,
+      pickupdistance,
+      cabdata,
+      minutes,
+      hour,
+      pickupLocation,
+      dropLocation,
+      lat,
+      lng,
+      latto,
+      lngto,
+      routecordinat,
+      triptype,
+    });
+  };
   return (
     <GestureHandlerRootView
       style={{flex: 1, backgroundColor: Color.backgroundColor}}>
@@ -335,6 +404,13 @@ const SearchVehicle = ({navigation, route}) => {
           width={responsiveScreenWidth(100)}
           pitchEnabled={true}
           rotateEnabled={true}>
+          {routecordinat.length > 0 && (
+            <Polyline
+              coordinates={routecordinat}
+              strokeWidth={4}
+              strokeColor="black"
+            />
+          )}
           {lat && lng && (
             <Marker
               coordinate={{
@@ -357,13 +433,6 @@ const SearchVehicle = ({navigation, route}) => {
               description={dropLocation}>
               <Image source={require('../Assets/pin_icon_dest.png')} />
             </Marker>
-          )}
-          {polylineCoordinates.length > 0 && (
-            <Polyline
-              coordinates={polylineCoordinates}
-              strokeColor="#000000" // Set the color of the polyline
-              strokeWidth={3} // Set the width of the polyline
-            />
           )}
         </MapView>
 
@@ -464,7 +533,6 @@ const SearchVehicle = ({navigation, route}) => {
                       ₹
                       {parseFloat(item.perkmfare) * parseInt(pickupdistance) +
                         item.bookingfee +
-                        item.cancellationcharge +
                         item.servicecharge}
                     </Text>
                     {/* <Text style={{color: 'red'}}>{pickuptime}</Text> */}
@@ -548,7 +616,7 @@ const SearchVehicle = ({navigation, route}) => {
                   <Text style={{color: 'red'}}>Includes Others allowance</Text>
                   <View style={styles.textcontent}>
                     <Text style={styles.outstationrstae}>PerKm Fare</Text>
-                    <Text>₹{cabdata?.perkmfare}</Text>
+                    <Text>₹{cabdata?.perkmfare * pickupdistance}</Text>
                   </View>
 
                   <View style={styles.textcontent}>
@@ -557,9 +625,25 @@ const SearchVehicle = ({navigation, route}) => {
                     </Text>
                     <Text>₹{cabdata?.cancellationcharge}</Text>
                   </View>
+
+                  <View style={styles.textcontent}>
+                    <Text style={styles.outstationrstae}>Booking Fee</Text>
+                    <Text>₹ {cabdata?.bookingfee}</Text>
+                  </View>
+                  <View style={styles.textcontent}>
+                    <Text style={styles.outstationrstae}>Service Fee</Text>
+                    <Text>₹ {cabdata?.servicecharge}</Text>
+                  </View>
                   <View style={styles.textcontent}>
                     <Text style={styles.outstationrstae}>Total Seat</Text>
-                    <Text>{cabdata?.totalseat}</Text>
+                    <Text>{cabdata?.totalseat} Seat</Text>
+                  </View>
+                  <View style={styles.textcontent}>
+                    <Text style={styles.outstationrstae}>Total Duration</Text>
+                    <Text>
+                      {hour > 0 ? `${hour} H` : null}{' '}
+                      {minutes > 0 ? `${minutes} minutes` : null}
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.bookButton}>

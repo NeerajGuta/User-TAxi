@@ -36,19 +36,98 @@ const Confirmlocation = ({navigation, route}) => {
 
   const {
     totalCost,
-    pickupLangi,
     pickupLocationdata,
+    pickupLangi,
     dropLocationdata,
     pickupdistance,
+    cabdata,
+    minutes,
+    hour,
+    pickupLocation,
+    dropLocation,
+    lat,
+    lng,
+    latto,
+    lngto,
+    routecordinat,
+    triptype,
   } = route.params;
   console.log(
     'totalCost, pickupLangi, dropLangi,pickupdistance',
     totalCost,
-    pickupLangi,
     pickupLocationdata,
+    pickupLangi,
     dropLocationdata,
     pickupdistance,
+    cabdata,
+    minutes,
+    hour,
+    pickupLocation,
+    dropLocation,
+    lat,
+    lng,
+    latto,
+    lngto,
+    routecordinat,
   );
+
+  const [drivercab, setDrivercab] = useState([]);
+  // console.log(drivercab?.lat, 'drivercab');
+  const getallDriver = async () => {
+    let res = await axios.get(
+      'http://192.168.1.19:8051/api/v1/driver/getdriver',
+    );
+    if (res.status === 200) {
+      setDrivercab(res.data.success);
+    }
+  };
+  // Function to calculate distance between two coordinates
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    if (!lat1 || !lat2 || !lon1 || !lon2) return 20;
+    const R = 6371; // Radius of the earth in km
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) *
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+    return distance;
+  };
+
+  // Function to filter drivers within 5 kilometers of current location
+  const filterDriversWithin5Kms = () => {
+    if (lat && lng) {
+      return drivercab.filter(driver => {
+        const driverLocation = {
+          latitude: parseFloat(driver?.location?.lat),
+          longitude: parseFloat(driver?.location?.lng),
+        };
+        console.log('driverLocation', driverLocation);
+
+        const userLocation = {
+          latitude: parseFloat(lat),
+          longitude: parseFloat(lng),
+        };
+        const distance = calculateDistance(
+          userLocation.latitude,
+          userLocation.longitude,
+          driverLocation.latitude,
+          driverLocation.longitude,
+        );
+        return distance <= 1; // 5 kilometers
+      });
+    }
+    return [];
+  };
+
+  useEffect(() => {
+    getallDriver();
+  }, []);
+
   const handleNavigation = () => {
     sendNotificationdriver();
   };
@@ -60,17 +139,68 @@ const Confirmlocation = ({navigation, route}) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-  useEffect(() => {
-    if (pickupLangi.latitude && pickupLangi.longitude) {
-      setRegion({
-        ...region,
-        latitude: parseFloat(pickupLangi.latitude),
-        longitude: parseFloat(pickupLangi.longitude),
-      });
+  // useEffect(() => {
+  //   if (pickupLangi.latitude &&lng) {
+  //     setRegion({
+  //       ...region,
+  //       latitude: parseFloat(pickupLangi.latitude),
+  //       longitude: parseFloat(pickupLangi.longitude),
+  //     });
+  //   }
+  // }, [pickupLangi]);
+
+  const bookTaxi = async () => {
+    try {
+      const config = {
+        url: '/postbooking',
+        method: 'post',
+        baseURL: 'http://192.168.1.19:8051/api/user',
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          userId: user?._id,
+          pickuplocation: {address: pickupLocation, lat, lng},
+          droplocation: {address: dropLocation, lat: latto, lng: lngto},
+          totalfare: totalCost,
+          totalkm: pickupdistance,
+          triptype: triptype,
+          paymenttype: '',
+          vehiclecat: cabdata?.vehicleType,
+          extraKm: cabdata?.perkmfare,
+          extraHours: cabdata?.perhrfare,
+          discount: 0,
+          tax: bookingfee,
+          servicecharge: cabdata?.servicecharge,
+          bookingfee: cabdata?.bookingfee,
+        },
+      };
+      let res = await axios(config);
+      if (res.status == 201) {
+        navigation.navigate('Connectingdriver', {
+          totalCost,
+          pickupLocationdata,
+          pickupLangi,
+          dropLocationdata,
+          pickupdistance,
+          cabdata,
+          minutes,
+          hour,
+          pickupLocation,
+          dropLocation,
+          lat,
+          lng,
+          latto,
+          lngto,
+          routecordinat,
+          triptype,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }, [pickupLangi]);
+  };
 
   const sendNotificationdriver = async () => {
+    bookTaxi();
     try {
       const config = {
         url: '/sendNotification',
@@ -79,23 +209,17 @@ const Confirmlocation = ({navigation, route}) => {
         headers: {'Content-Type': 'application/json'},
         data: {
           customerId: user?._id,
-          pickupLocation: pickupLocationdata,
-          dropLocation: dropLocationdata,
+          pickupLocation: pickupLocation,
+          dropLocation: dropLocation,
           price: totalCost,
           distance: pickupdistance,
+          triptype,
         },
       };
 
       let res = await axios(config);
 
       if (res.status === 200) {
-        navigation.navigate('Connectingdriver', {
-          totalCost,
-          pickupLangi,
-          pickupLocationdata,
-          dropLocationdata,
-          pickupdistance,
-        });
       }
     } catch (error) {
       console.log(error);
@@ -136,25 +260,50 @@ const Confirmlocation = ({navigation, route}) => {
             width={responsiveScreenWidth(100)}
             pitchEnabled={true}
             rotateEnabled={true}>
-            {pickupLangi.latitude && pickupLangi.longitude && (
+            {filterDriversWithin5Kms()?.map((driver, index) => (
+              <Marker
+                key={index}
+                coordinate={{
+                  latitude: parseFloat(driver?.location?.lat),
+                  longitude: parseFloat(driver?.location?.lng),
+                }}
+                // title={driver.name} // Use driver's name as the marker title
+              >
+                <Image
+                  source={require('../Assets/carmap.png')}
+                  style={{height: 35, width: 35}}
+                />
+              </Marker>
+            ))}
+            {routecordinat.length > 0 && (
+              <Polyline
+                coordinates={routecordinat}
+                strokeColor="#000000" // Set the color of the polyline
+                strokeWidth={3} // Set the width of the polyline
+              />
+            )}
+            {latto && lngto && (
               <Marker
                 coordinate={{
-                  latitude: parseFloat(pickupLangi.latitude),
-                  longitude: parseFloat(pickupLangi.longitude),
+                  latitude: parseFloat(latto),
+                  longitude: parseFloat(lngto),
+                }}
+                title="Drop-off Location"
+                description={dropLocation}>
+                <Image source={require('../Assets/pin_icon_dest.png')} />
+              </Marker>
+            )}
+            {lat && lng && (
+              <Marker
+                coordinate={{
+                  latitude: parseFloat(lat),
+                  longitude: parseFloat(lng),
                 }}
                 title="Pickup Location"
-                description={pickupLocationdata}>
+                description={pickupLocation}>
                 <Image source={require('../Assets/pin_icon.png')} />
               </Marker>
             )}
-
-            {/* {polylineCoordinates.length > 0 && (
-            <Polyline
-              coordinates={polylineCoordinates}
-              strokeColor="#000000" // Set the color of the polyline
-              strokeWidth={3} // Set the width of the polyline
-            />
-          )} */}
           </MapView>
 
           <View style={styles.container1}>
@@ -204,7 +353,7 @@ const Confirmlocation = ({navigation, route}) => {
                     fontSize: 16,
                     color: Color.black,
                   }}>
-                  {pickupLocationdata}
+                  {pickupLocation}
                 </Text>
               </View>
             </View>

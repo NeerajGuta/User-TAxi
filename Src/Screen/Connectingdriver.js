@@ -22,20 +22,22 @@ import FastImage from 'react-native-fast-image';
 
 const Connectingdriver = ({navigation, route}) => {
   const {
-    // totalCost,
-    pickupLangi,
+    totalCost,
     pickupLocationdata,
+    pickupLangi,
     dropLocationdata,
     pickupdistance,
+    cabdata,
+    minutes,
+    hour,
+    pickupLocation,
+    dropLocation,
+    lat,
+    lng,
+    latto,
+    lngto,
+    routecordinat,
   } = route.params;
-  console.log(
-    'totalCost, pickupLangi, dropLangi,pickupdistance',
-    // totalCost,
-    pickupLangi,
-    pickupLocationdata,
-    dropLocationdata,
-    pickupdistance,
-  );
 
   const mapRef = useRef();
   const [region, setRegion] = useState({
@@ -44,15 +46,16 @@ const Connectingdriver = ({navigation, route}) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-  useEffect(() => {
-    if (pickupLangi.latitude && pickupLangi.longitude) {
-      setRegion({
-        ...region,
-        latitude: parseFloat(pickupLangi.latitude),
-        longitude: parseFloat(pickupLangi.longitude),
-      });
-    }
-  }, [pickupLangi]);
+  // useEffect(() => {
+  //   if (pickupLangi.latitude && pickupLangi.longitude) {
+  //     setRegion({
+  //       ...region,
+  //       latitude: parseFloat(pickupLangi.latitude),
+  //       longitude: parseFloat(pickupLangi.longitude),
+  //     });
+  //   }
+  // }, [pickupLangi]);
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Color.backgroundColor}}>
       <View
@@ -86,18 +89,35 @@ const Connectingdriver = ({navigation, route}) => {
           width={responsiveScreenWidth(100)}
           pitchEnabled={true}
           rotateEnabled={true}>
-          {pickupLangi.latitude && pickupLangi.longitude && (
+          {routecordinat.length > 0 && (
+            <Polyline
+              coordinates={routecordinat}
+              strokeColor="#000000" // Set the color of the polyline
+              strokeWidth={3} // Set the width of the polyline
+            />
+          )}
+          {latto && lngto && (
             <Marker
               coordinate={{
-                latitude: parseFloat(pickupLangi.latitude),
-                longitude: parseFloat(pickupLangi.longitude),
+                latitude: parseFloat(latto),
+                longitude: parseFloat(lngto),
+              }}
+              title="Drop-off Location"
+              description={dropLocation}>
+              <Image source={require('../Assets/pin_icon_dest.png')} />
+            </Marker>
+          )}
+          {lat && lng && (
+            <Marker
+              coordinate={{
+                latitude: parseFloat(lat),
+                longitude: parseFloat(lng),
               }}
               title="Pickup Location"
-              description={pickupLocationdata}>
+              description={pickupLocation}>
               <Image source={require('../Assets/pin_icon.png')} />
             </Marker>
           )}
-
           {/* {polylineCoordinates.length > 0 && (
             <Polyline
               coordinates={polylineCoordinates}

@@ -102,7 +102,16 @@ const Local = ({navigation}) => {
         message: 'Please select both pickup and drop locations',
         type: 'danger',
       });
-    } else navigation.navigate('SearchVehicle', {pickupLocation, dropLocation,lat,lng,latto,lngto});
+    } else
+      navigation.navigate('SearchVehicle', {
+        pickupLocation,
+        dropLocation,
+        lat,
+        lng,
+        latto,
+        lngto,
+        triptype: 'Local',
+      });
   };
 
   return (

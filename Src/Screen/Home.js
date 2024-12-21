@@ -19,7 +19,7 @@ import Color from '../Constant/Color';
 import Geolocation from '@react-native-community/geolocation';
 import MapView, {Marker, PROVIDER_GOOGLE, Polygon} from 'react-native-maps';
 import {check, request, RESULTS} from 'react-native-permissions';
-const API_KEY = "511ee4a684a7432389e220e510e77a73";
+const API_KEY = '511ee4a684a7432389e220e510e77a73';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -153,7 +153,7 @@ const Home = ({navigation, route}) => {
           setlongi(longitude);
           setlati(latitude);
           if (mapRef) {
-            mapRef.current.animateToRegion({
+            mapRef?.current?.animateToRegion({
               latitude: latitude,
               longitude: longitude,
               latitudeDelta: 0.005,
@@ -199,7 +199,10 @@ const Home = ({navigation, route}) => {
 
   useEffect(() => {
     if (lati && longi) {
-      getGeocodingData(lati, longi);
+      const timeout = setTimeout(() => {
+        getGeocodingData(lati, longi);
+      }, 50000);
+      return clearTimeout(timeout);
     }
   }, [lati, longi]);
 
@@ -219,6 +222,7 @@ const Home = ({navigation, route}) => {
 
   // Function to calculate distance between two coordinates
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    if (!lat1 || !lat2 || !lon1 || !lon2) return 20;
     const R = 6371; // Radius of the earth in km
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
@@ -238,9 +242,11 @@ const Home = ({navigation, route}) => {
     if (lati && longi) {
       return drivercab.filter(driver => {
         const driverLocation = {
-          latitude: parseFloat(driver.lat),
-          longitude: parseFloat(driver.long),
+          latitude: parseFloat(driver?.location?.lat),
+          longitude: parseFloat(driver?.location?.lng),
         };
+        console.log('driverLocation', driverLocation);
+
         const userLocation = {
           latitude: parseFloat(lati),
           longitude: parseFloat(longi),
@@ -277,6 +283,21 @@ const Home = ({navigation, route}) => {
               width={responsiveScreenWidth(100)}
               pitchEnabled={true}
               rotateEnabled={true}>
+              {filterDriversWithin5Kms()?.map((driver, index) => (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: parseFloat(driver?.location?.lat),
+                    longitude: parseFloat(driver?.location?.lng),
+                  }}
+                  // title={driver.name} // Use driver's name as the marker title
+                >
+                  <Image
+                    source={require('../Assets/carmap.png')}
+                    style={{height: 35, width: 35}}
+                  />
+                </Marker>
+              ))}
               {lati & longi ? (
                 <>
                   <Marker
@@ -293,23 +314,6 @@ const Home = ({navigation, route}) => {
               ) : (
                 <></>
               )}
-              {filterDriversWithin5Kms()
-                ?.filter(itemcab => itemcab.status === 'online')
-                ?.map((driver, index) => (
-                  <Marker
-                    key={index}
-                    coordinate={{
-                      latitude: parseFloat(driver.lat),
-                      longitude: parseFloat(driver.long),
-                    }}
-                    // title={driver.name} // Use driver's name as the marker title
-                  >
-                    <Image
-                      source={require('../Assets/Taxi-Right.png')}
-                      style={{height: 35, width: 35}}
-                    />
-                  </Marker>
-                ))}
             </MapView>
             {/* <Image
               source={require('../Assets/map.png')}
