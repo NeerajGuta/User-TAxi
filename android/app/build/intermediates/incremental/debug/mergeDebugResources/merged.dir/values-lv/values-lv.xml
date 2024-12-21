@@ -141,4 +141,5 @@
     <string gender="unknown" name="tablist_description">Ciļņu saraksts</string>
     <string gender="unknown" name="timer_description">Taimeris</string>
     <string gender="unknown" name="toolbar_description">Rīkjosla</string>
+    <string name="wallet_buy_button_place_holder">Iegādāties, izmantojot Google</string>
 </resources>

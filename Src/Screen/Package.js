@@ -1,363 +1,278 @@
+import React, {useEffect, useState} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
-  Image,
-  View,
   TouchableOpacity,
-  Animated,
-  ScrollView,
-  FlatList,
-  ImageBackground,
+  View,
+  Modal,
+  Button,
 } from 'react-native';
-import React, {useState} from 'react';
-import Color from '../Constant/Color';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import COLORS from '../Constant/Color';
 import AnimatedButton from '../Constant/Button';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
+import {showMessage} from 'react-native-flash-message';
+import {Picker} from '@react-native-picker/picker';
+import DatePicker from 'react-native-date-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveScreenWidth,
+} from 'react-native-responsive-dimensions';
+import axios from 'axios';
+import Color from '../Constant/Color';
 
 const Package = ({navigation}) => {
-  const [acc, setAcc] = useState(true);
-  const [acc1, setAcc1] = useState(false);
-  const [acc2, setAcc2] = useState(false);
+  const [pickupLocation, setPickupLocation] = useState(null);
+  // console.log('pickupLocation', pickupLocation);
+  const [dropLocation, setDropLocation] = useState(null);
 
-  const handleChange = () => {
-    setAcc(true);
-    setAcc1(false);
-    setAcc2(false);
-  };
-  const handleChange1 = () => {
-    setAcc(false);
-    setAcc1(true);
-    setAcc2(false);
-  };
-  const handleChange2 = () => {
-    setAcc(false);
-    setAcc1(false);
-    setAcc2(true);
-  };
-  const [isModalVisible, setModalVisible] = useState(false);
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+  const [packages, setpackages] = useState();
+
+  const [data, setData] = useState([]);
+  // console.log('data', data);
+  const packagesType = async () => {
+    try {
+      let res = await axios.get(
+        'http://192.168.1.19:8051/api/v1/admin/getpackagestype',
+      );
+      if (res.status === 200) {
+        setData(res.data.success);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const [accview, setAccview] = useState('');
-  const handleView = () => {
-    setAccview(!accview);
+  useEffect(() => {
+    packagesType();
+  }, []);
+
+  const [date, setDate] = useState(new Date());
+  const [modalVisible, setModalVisible] = useState(false);
+  const handleDateChange = newDate => {
+    setDate(newDate);
+  };
+  const handleDateReturnChange = newDate => {
+    setreturnDate(newDate);
   };
 
-  const handleNavigation = () => {
-    navigation.navigate('PackageBook');
+  const [time, setTime] = useState(new Date());
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
+  const onChange = (event, selectedTime) => {
+    const currentTime = selectedTime || time;
+    setShowTimePicker(false);
+    setTime(currentTime);
   };
 
-  const data = [
-    {
-      id: 1,
-      name: 'Hatchback',
-      price: '₹2415',
-      subname: 'Indica,swift Or Similar',
-      image: '../Assets/HatchBack.png',
-    },
-    {
-      id: 2,
-      name: 'Book Now',
-      price: '₹2415',
-      subname: 'Indica,swift Or Similar',
-      image: '../Assets/HatchBack.png',
-    },
-    {
-      id: 2,
-      name: 'Book Now',
-      price: '₹2415',
-      subname: 'Indica,swift Or Similar',
-      image: '../Assets/HatchBack.png',
-    },
-    {
-      id: 2,
-      name: 'Book Now',
-      price: '₹2415',
-      subname: 'Indica,swift Or Similar',
-      image: '../Assets/HatchBack.png',
-    },
-    {
-      id: 2,
-      name: 'Book Now',
-      price: '₹2415',
-      subname: 'Indica,swift Or Similar',
-      image: '../Assets/HatchBack.png',
-    },
-  ];
+  const showTimepicker = () => {
+    setShowTimePicker(true);
+  };
+  const handlePress = () => {
+    navigation.navigate('Packagesdetails', {
+      pickupLocation: pickupLocation,
+      packages: packages,
+      date: moment(date)?.format('YYYY-MM-DD'),
+      time: moment(time)?.format('HH:mm'),
+    });
+  };
+  const YOUR_GOOGLE_API_KEY = 'AIzaSyACW1po0qU1jptIybBPGdFY-_MrycQPjfk';
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: Color.backgroundColor}}>
-      <View style={{flex: 1, backgroundColor: Color.backgroundColor}}>
-        <View style={styles.containent}>
-          <View>
-            <FontAwesome5
-              name="arrow-left"
-              size={20}
-              style={styles.icons}
-              color="green"
-              onPress={() => navigation.goBack()}
-            />
-            {/* <FontAwesome5
-              name="walking"
-              size={20}
-              style={styles.icons}
-              color="green"
-            /> */}
-            <View style={styles.input}>
-              <TextInput
-                placeholder="Pickup location "
-                placeholderTextColor={Color.black}
-                keyboardType="default"
-                style={{
-                  width: '100%',
-                }}
-              />
+    <View style={styles.container}>
+      <View style={styles.backButtonContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack('')}>
+          <Feather name="arrow-left" size={20} color={COLORS.black} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.autocompleteContainer}>
+        <Text style={styles.text}>Pick up location</Text>
+        <GooglePlacesAutocomplete
+          placeholder="Search Pick up location"
+          onPress={(data, details = null) => {
+            setPickupLocation({data, details});
+          }}
+          query={{
+            key: YOUR_GOOGLE_API_KEY,
+            language: 'en',
+          }}
+          fetchDetails={true}
+          onFail={error => console.log(error)}
+          onNotFound={() => console.log('no results')}
+          listEmptyComponent={() => (
+            <View style={styles.noResultsContainer}>
+              <Text style={styles.noResultsText}>No results were found</Text>
             </View>
-          </View>
-          {/* <View
-            style={{
-              marginBottom: 12,
-              borderTopWidth: 1,
-              borderColor: Color.grey,
-            }}>
-            <Entypo
-              name="dot-single"
-              size={20}
-              style={styles.icons}
-              color="red"
+          )}
+          styles={{
+            textInput: styles.textInput,
+          }}
+        />
+        <Text style={styles.text}>Package Type</Text>
+        <View style={styles.packagess}>
+          <Picker
+            selectedValue={packages}
+            onValueChange={(itemValue, itemIndex) => setpackages(itemValue)}>
+            <Picker.Item
+              label="Select Packages Type"
+              value="Select Packages Type"
             />
-            <View style={styles.input}>
-              <TextInput
-                placeholder="Drop location "
-                placeholderTextColor={Color.black}
-                keyboardType="default"
-                style={{
-                  width: '100%',
-                }}
-              />
-            </View>
-          </View> */}
+            {data.map(ele => {
+              return (
+                <Picker.Item
+                  label={ele?.packagestype}
+                  value={ele?.packagestype}
+                />
+              );
+            })}
+          </Picker>
         </View>
 
-        <View style={styles.section}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.black,
-              fontWeight: '600',
-              paddingLeft: 10,
-            }}>
-            Recommended for you
-          </Text>
-          <FlatList
-            data={data}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() => {
-                  handleChange(), toggleModal();
-                }}>
-                <Animated.View style={acc ? styles.sedanmini : styles.sedan}>
-                  <Image
-                    style={styles.image}
-                    source={require('../Assets/car.png')}
-                    resizeMode="contain" // Ensure the image fills the container
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginHorizontal: 10,
+            marginBottom: 5,
+          }}>
+          <View>
+            <Text style={styles.text}>Pick up Date</Text>
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+              <Text style={styles.dates}>
+                {moment(date).format('YYYY-MM-DD')}
+              </Text>
+            </TouchableOpacity>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(false);
+              }}>
+              <View
+                style={[
+                  styles.centeredView,
+                  {backgroundColor: Color?.backgroundColor},
+                ]}>
+                <View style={styles.modalView}>
+                  <DatePicker
+                    mode="date"
+                    date={date}
+                    onDateChange={handleDateChange}
                   />
-                  <View>
-                    <Text style={styles.mean}>{item?.name}</Text>
-                    <Text>{item?.subname}</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.mean}>{item.price}</Text>
-                    {/* <Text style={[styles.mean]}>{item.price}</Text> */}
-                  </View>
-                </Animated.View>
-              </TouchableOpacity>
+                  <Button
+                    title="Close"
+                    onPress={() => setModalVisible(false)}
+                  />
+                </View>
+              </View>
+            </Modal>
+          </View>
+          <View>
+            <Text style={styles.text}>Pick up Time</Text>
+            <TouchableOpacity onPress={showTimepicker}>
+              <Text style={styles.dates}>{moment(time).format('LT')}</Text>
+            </TouchableOpacity>
+            {showTimePicker && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={time}
+                mode="time"
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+              />
             )}
-            keyExtractor={item => item.id.toString()}
-          />
+          </View>
         </View>
       </View>
-      <View style={styles.modal}>
-        <Modal isVisible={isModalVisible}>
-          <View style={styles.congrats}>
-            <AntDesign
-              name="arrowleft"
-              size={20}
-              style={{paddingLeft: 10}}
-              onPress={toggleModal}
-            />
-            <View style={styles.comback}>
-              <View style={{width: 210}}>
-                <Text
-                  style={{fontSize: 17, fontWeight: '600', color: Color.black}}>
-                  Hatchback
-                </Text>
-                <Text style={{textAlign: 'justify'}}>
-                  Indica,swift Or Similar | Ac | 4 Seats
-                </Text>
-              </View>
-              <Image
-                source={require('../Assets/car.png')}
-                style={styles.image}
-                resizeMode="cover"
-              />
-            </View>
-            <View style={styles.comback}>
-              <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                <Image
-                  source={require('../Assets/car.png')}
-                  style={{width: 50, height: 30}}
-                  resizeMode="cover"
-                />
-                <Text style={{paddingVertical: 10}}>Comfy Hatch</Text>
-              </View>
-              <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                <Image
-                  source={require('../Assets/money.png')}
-                  style={{width: 30, height: 30}}
-                  resizeMode="cover"
-                />
-                <Text style={{paddingVertical: 10}}>Pocket Friendly</Text>
-              </View>
-              <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                <Image
-                  source={require('../Assets/no-money.png')}
-                  style={{width: 30, height: 30}}
-                  resizeMode="cover"
-                />
-                <Text style={{paddingVertical: 10}}>Cashless Rides</Text>
-              </View>
-            </View>
-            <View style={styles.comback1}>
-              <Text style={styles.mean}>ITENARY</Text>
-              <Text>&#x27A6;</Text>
-              <Text>&#x27A6;</Text>
-              <Text>&#x27A6;</Text>
-            </View>
-            <View style={styles.cabbook}>
-              <View>
-                <Text style={styles.mean}>Total fare</Text>
-                <Text>Includes taxes</Text>
-                <TouchableOpacity onPress={handleView}>
-                  <Text style={{color: 'red', fontWeight: '600'}}>
-                    View details
-                  </Text>
-                </TouchableOpacity>
-                {accview ? (
-                  <>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingVertical: 5,
-                      }}>
-                      <Text>Your Trip</Text>
-                      <Text>₹613</Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingVertical: 5,
-                      }}>
-                      <Text>Toll/Parking</Text>
-                      <Text>₹00.00</Text>
-                    </View>
-                    <Text>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s
-                    </Text>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </View>
-              <Text style={styles.mean}>₹613</Text>
-            </View>
-            <View style={styles.bookButton}>
-              <AnimatedButton
-                title="Book now"
-                style={{
-                  marginTop: 18,
-                  marginBottom: 4,
-                }}
-                onPress={handleNavigation}
-              />
-            </View>
-            {/* <AnimatedButton title="Hide modal" onPress={toggleModal} /> */}
-          </View>
-        </Modal>
+
+      <View style={styles.buttonContainer}>
+        <AnimatedButton title="Search" onPress={handlePress}></AnimatedButton>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default Package;
 
 const styles = StyleSheet.create({
-  containent: {
-    // flex: 0.05,
-    // flexGrow: 1,
-    // flexShrink: 1,
-    borderBottomWidth: 1,
-    borderColor: Color.grey,
-    backgroundColor: Color.backgroundColor,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  input: {
-    width: '100%',
-    height: 51,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingLeft: 30,
-  },
-  icons: {
-    position: 'absolute',
-    top: 15,
-    left: 10,
-  },
-  section: {
-    // paddingLeft: 10,
-    paddingVertical: 5,
+  container: {
     flex: 1,
+    backgroundColor: 'white',
+    paddingHorizontal: 5,
   },
-  sedan: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    // alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+  backButtonContainer: {
+    width: responsiveScreenWidth(35),
+    backgroundColor: COLORS.backgroundColor,
+    padding: 7,
+    borderRadius: 60,
     marginVertical: 10,
   },
-  mean: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: Color.black,
+  autocompleteContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    position: 'absolute',
+    top: 50,
+    zIndex: 1,
+    width: responsiveScreenWidth(97),
+    alignSelf: 'center',
+    marginHorizontal: 5,
   },
-  sedanmini: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    // alignItems: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 30,
-    marginVertical: 5,
-    marginHorizontal: 10,
-    backgroundColor: Color.backgroundColor,
+  text: {
+    fontSize: 16,
+    color: COLORS.black,
+    paddingBottom: 10,
+  },
+  textInput: {
+    fontSize: responsiveFontSize(2),
+    fontWeight: '600',
+    backgroundColor: COLORS.grey,
+    color: COLORS.black,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: COLORS.grey,
+    borderRadius: 5,
+    height: responsiveHeight(8),
+    marginBottom: 10,
+  },
+  noResultsContainer: {
+    flex: 1,
+    paddingHorizontal: 5,
+  },
+  noResultsText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.black,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+  },
+  packagess: {
+    fontSize: responsiveFontSize(2),
+    fontWeight: '600',
+    backgroundColor: COLORS.grey,
+    color: COLORS.black,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: COLORS.grey,
+    borderRadius: 5,
+    height: responsiveHeight(8),
+    marginBottom: 10,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -366,44 +281,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  dates: {
     borderWidth: 1,
     borderColor: '#dbd3d340',
-    borderRadius: 5,
-  },
-  image: {
-    height: 40,
-    width: 70,
-  },
-  bookButton: {
+    backgroundColor: COLORS.grey,
+    borderRadius: 8,
     alignSelf: 'center',
-  },
-  congrats: {
-    minHeight: 400,
-    position: 'absolute',
-    top: 0,
     width: '100%',
-    backgroundColor: Color.backgroundColor,
-    paddingVertical: 20,
-  },
-  comback: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    marginBottom: 15,
-  },
-  cabbook: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 15,
-    borderRadius: 10,
-    borderColor: Color.grey,
-    padding: 20,
-    borderWidth: 1,
-  },
-  comback1: {
-    marginHorizontal: 15,
-    borderColor: Color.grey,
-    marginBottom: 10,
+    textAlign: 'center',
+    height: responsiveHeight(8),
+    padding: 18,
+    fontSize: responsiveFontSize(2),
+    fontWeight: '600',
   },
 });

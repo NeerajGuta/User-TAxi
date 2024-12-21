@@ -139,4 +139,5 @@
     <string gender="unknown" name="tablist_description">Lista de separadores</string>
     <string gender="unknown" name="timer_description">Temporizador</string>
     <string gender="unknown" name="toolbar_description">Barra de ferramentas</string>
+    <string name="wallet_buy_button_place_holder">Comprar com a Google</string>
 </resources>

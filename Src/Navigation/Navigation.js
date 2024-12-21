@@ -28,6 +28,8 @@ import Confirmlocation from '../Screen/Confirmlocation';
 import Connectingdriver from '../Screen/Connectingdriver';
 import Local from '../Screen/Local';
 import Outstation from '../Screen/Outstation';
+import OutstationSearch from '../Screen/OutstationSearch';
+import Packagesdetails from '../Screen/Packagesdetails';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -177,6 +179,16 @@ export default function Navigation() {
         <Stack.Screen
           name="Outstation"
           component={Outstation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="OutstationSearch"
+          component={OutstationSearch}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Packagesdetails"
+          component={Packagesdetails}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

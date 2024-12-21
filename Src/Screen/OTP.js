@@ -16,24 +16,17 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import COLORS from '../Constant/Color';
 import AnimatedButton from '../Constant/Button';
-import Modal from 'react-native-modal';
-import LottieView from 'lottie-react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
+import {showMessage} from 'react-native-flash-message';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CELL_COUNT = 6;
 
-const OTP = ({navigation}) => {
-  const handlePress = () => {
-    navigation.navigate('OTP');
-  };
-
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [data, setdata] = useState(false);
-  const toggleModal = () => {
-    setdata(true);
-    setModalVisible(!isModalVisible);
-  };
+const OTP = ({navigation, route}) => {
+  const {number} = route.params;
+  // console.log(number, 'number');
+  // let number = 9473925485;
 
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
@@ -42,17 +35,33 @@ const OTP = ({navigation}) => {
     setValue,
   });
 
-  const uri = require('../Constant/animation.json');
+  const VerfiyOtp = async () => {
+    try {
+      if (!value)
+        return showMessage({
+          message: 'Please enter otp',
+          type: 'danger',
+        });
+      const config = {
+        url: '/api/v1/user/otpvarification',
+        method: 'post',
+        baseURL: 'http://192.168.1.19:8051',
+        headers: {'content-type': 'application/json'},
+        data: {
+          phoneNumber: number,
+          otp: value,
+        },
+      };
+      let res = await axios(config);
+      if (res.status === 200) {
+        await AsyncStorage.setItem('user', JSON.stringify(res.data.details));
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      console.log(error, number);
+    }
+  };
 
-  setTimeout(() => {}, 3000);
-
-  // useEffect(() => {
-  //   if (data === true) {
-  //     setInterval(() => {
-  //       navigation.navigate('Home');
-  //     }, 2000);
-  //   }
-  // }, [data]);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.buttonColor}}>
       <View style={{flex: 1}}>
@@ -82,7 +91,7 @@ const OTP = ({navigation}) => {
                 color: COLORS.black,
                 textAlign: 'center',
               }}>
-              Please enter the code we just sent to phone ********85 !
+              Please enter the code we just sent to phone {number} !
             </Text>
 
             <CodeField
@@ -117,40 +126,10 @@ const OTP = ({navigation}) => {
               marginTop: 18,
               marginBottom: 4,
             }}
-            onPress={() => {
-              // toggleModal();
-              navigation.navigate('Home');
-            }}
+            onPress={VerfiyOtp}
+            // onPress={() => navigation.navigate('Home')}
           />
         </View>
-      </View>
-      {/* Modal */}
-      <View style={styles.modal}>
-        <Modal isVisible={isModalVisible}>
-          <View style={styles.congrats}>
-            <AntDesign
-              name="arrowleft"
-              size={20}
-              style={{paddingLeft: 10}}
-              onPress={toggleModal}
-            />
-            <LottieView
-              source={uri}
-              autoPlay
-              loop
-              style={{width: 160, height: 160, alignSelf: 'center'}}
-            />
-            <View style={styles.containers}>
-              <Text style={styles.welcome}>Congratulations</Text>
-              <Text style={styles.containt}>
-                Your phone no verify,Acccount is ready to use, you will be
-                redirected to the Home Screen in a few second
-              </Text>
-            </View>
-
-            {/* <AnimatedButton title="Hide modal" onPress={toggleModal} /> */}
-          </View>
-        </Modal>
       </View>
     </SafeAreaView>
   );

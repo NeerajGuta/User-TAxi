@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">Oortjielys</string>
     <string gender="unknown" name="timer_description">Afteller</string>
     <string gender="unknown" name="toolbar_description">Nutsbalk</string>
+    <string name="wallet_buy_button_place_holder">Koop met Google</string>
 </resources>

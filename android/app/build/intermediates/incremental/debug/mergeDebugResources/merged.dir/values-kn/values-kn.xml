@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">ಟ್ಯಾಬ್ ಪಟ್ಟಿ</string>
     <string gender="unknown" name="timer_description">ಟೈಮರ್</string>
     <string gender="unknown" name="toolbar_description">ಟೂಲ್ ಬಾರ್</string>
+    <string name="wallet_buy_button_place_holder">Google ನಲ್ಲಿ ಖರೀದಿಸಿ</string>
 </resources>

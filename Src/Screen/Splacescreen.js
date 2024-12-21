@@ -1,10 +1,30 @@
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Splacescreen = ({navigation}) => {
-  setTimeout(() => {
-    navigation.navigate('Onboarding');
-  }, 3000);
+  const getUser = async () => {
+    let user = await AsyncStorage.getItem('user');
+    user = JSON.parse(user);
+    if (!user) {
+      setTimeout(() => {
+        navigation.navigate('Onboarding');
+      }, 3000);
+      return;
+    } else {
+      setTimeout(() => {
+        navigation.navigate('Home');
+      }, 2000);
+      return;
+    }
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  // setTimeout(() => {
+  //   navigation.navigate('Onboarding');
+  // }, 3000);
 
   return (
     <SafeAreaView

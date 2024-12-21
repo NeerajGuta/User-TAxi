@@ -136,4 +136,5 @@
     <string gender="unknown" name="summary_description">Riepilogo</string>
     <string gender="unknown" name="tablist_description">Lista delle tab</string>
     <string gender="unknown" name="toolbar_description">Barra degli strumenti</string>
+    <string name="wallet_buy_button_place_holder">Acquista con Google</string>
 </resources>

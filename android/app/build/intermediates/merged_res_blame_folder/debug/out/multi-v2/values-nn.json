@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.taxi.app-mergeDebugResources-40:/values-nn/values-nn.xml",
+            "outputFile": "com.taxi.app-mergeDebugResources-47:/values-nn/values-nn.xml",
             "map": [
                 {
                     "source": "D:\\Raghavendra_Chaubey\\TAxi_App\\Taxi_UserApp\\node_modules\\react-native-date-picker\\android\\build\\intermediates\\packaged_res\\debug\\values-nn\\values-nn.xml",

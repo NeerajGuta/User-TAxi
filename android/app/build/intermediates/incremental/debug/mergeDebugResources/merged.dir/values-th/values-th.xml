@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">รายการแท็บ</string>
     <string gender="unknown" name="timer_description">ตัวจับเวลา</string>
     <string gender="unknown" name="toolbar_description">แถบเครื่องมือ</string>
+    <string name="wallet_buy_button_place_holder">ซื้อด้วย Google</string>
 </resources>

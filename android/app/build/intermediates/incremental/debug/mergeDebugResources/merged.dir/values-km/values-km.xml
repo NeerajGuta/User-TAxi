@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">បញ្ជីថេប</string>
     <string gender="unknown" name="timer_description">មុខងារកំណត់ម៉ោង</string>
     <string gender="unknown" name="toolbar_description">របារ​ឧបករណ៍</string>
+    <string name="wallet_buy_button_place_holder">ទិញ​ជា​មួយ Google</string>
 </resources>

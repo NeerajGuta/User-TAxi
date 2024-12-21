@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">فهرست برگه</string>
     <string gender="unknown" name="timer_description">زمان‌سنج</string>
     <string gender="unknown" name="toolbar_description">نوار ابزار</string>
+    <string name="wallet_buy_button_place_holder">خرید با Google</string>
 </resources>

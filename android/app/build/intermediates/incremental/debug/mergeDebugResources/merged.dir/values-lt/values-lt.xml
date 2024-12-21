@@ -142,4 +142,5 @@
     <string gender="unknown" name="tablist_description">Skirtukų sąrašas</string>
     <string gender="unknown" name="timer_description">Laikmatis</string>
     <string gender="unknown" name="toolbar_description">Įrankių juosta</string>
+    <string name="wallet_buy_button_place_holder">Pirkti naudojant „Google“</string>
 </resources>

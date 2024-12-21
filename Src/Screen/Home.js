@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {
-  Button,
   Image,
   ScrollView,
   StyleSheet,
@@ -8,61 +7,38 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Modal,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../Constant/Color';
-import DatePicker from 'react-native-date-picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import AnimatedButton from '../Constant/Button';
 import Color from '../Constant/Color';
-import Package from './Package';
 import Geolocation from '@react-native-community/geolocation';
 import MapView, {Marker, PROVIDER_GOOGLE, Polygon} from 'react-native-maps';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {check, request, RESULTS} from 'react-native-permissions';
+const API_KEY = "511ee4a684a7432389e220e510e77a73";
 import {
   responsiveFontSize,
   responsiveHeight,
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
+import axios from 'axios';
 
 const Home = ({navigation, route}) => {
-  const [selectedLanguage, setSelectedLanguage] = useState();
-  const [selectedValue, setSelectedValue] = useState(null);
-
   const mapRef = useRef();
 
-  const [date, setDate] = useState(new Date());
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const handleDateChange = newDate => {
-    setDate(newDate);
-  };
   const handlePress = () => {
     navigation.navigate('Local');
   };
   const handleOutstation = () => {
     navigation.navigate('Outstation');
   };
-  const handlePressPackage = () => {
+  const handlePackages = () => {
     navigation.navigate('Package');
-  };
-
-  const [time, setTime] = useState(new Date());
-  const [showTimePicker, setShowTimePicker] = useState(false);
-
-  const onChange = (event, selectedTime) => {
-    const currentTime = selectedTime || time;
-    setShowTimePicker(false);
-    setTime(currentTime);
-  };
-
-  const showTimepicker = () => {
-    setShowTimePicker(true);
   };
 
   const [acc, setAcc] = useState(true);
@@ -89,8 +65,52 @@ const Home = ({navigation, route}) => {
   const [lati, setlati] = useState(null);
   const [locationPermissionRequested, setLocationPermissionRequested] =
     useState(false);
+  const [position, setposition] = useState({
+    latitude: 12.9716,
+    longitude: 77.5946,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
 
   // Location Permission
+
+  useEffect(() => {
+    const checkLocationServices = async () => {
+      const permission = await check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+
+      if (permission === RESULTS.GRANTED) {
+        Geolocation.getCurrentPosition(
+          position => {
+            console.log(position);
+          },
+          error => {
+            console.log(error); // Log the error to see the error code
+            if (error.code === 1) {
+              // PERMISSION_DENIED
+              requestLocationPermission();
+            } else if (error.code === 2 || error.code === 3) {
+              // POSITION_UNAVAILABLE or TIMEOUT
+              showAlert('Location services are disabled. Please enable them.');
+            }
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+      } else if (permission === RESULTS.DENIED) {
+        requestLocationPermission();
+      } else if (permission === RESULTS.BLOCKED) {
+        showAlert(
+          'Location permission is blocked. Please enable it in settings.',
+        );
+      }
+    };
+
+    if (!locationPermissionRequested) {
+      checkLocationServices();
+    }
+  }, [locationPermissionRequested]);
+
   const requestLocationPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -102,26 +122,28 @@ const Home = ({navigation, route}) => {
       );
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        // Handle permission granted
+        setLocationPermissionRequested(true);
+        checkLocationServices();
         console.log('Location permission granted');
       } else {
-        // Handle permission denied
+        showAlert('Location permission denied. Please enable it in settings.');
         console.log('Location permission denied');
       }
 
-      // Mark that permission has been requested to avoid multiple requests
       setLocationPermissionRequested(true);
     } catch (error) {
       console.log('Location permission request error:', error);
-      // Handle the error or display an error message
     }
   };
 
-  useEffect(() => {
-    if (!locationPermissionRequested) {
-      requestLocationPermission();
-    }
-  }, [locationPermissionRequested]);
+  const showAlert = message => {
+    Alert.alert(
+      'Location Services Alert',
+      message,
+      [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+      {cancelable: false},
+    );
+  };
 
   const handleGetLocation = () => {
     if (!longi) {
@@ -159,11 +181,11 @@ const Home = ({navigation, route}) => {
 
   console.log('longi', longi, lati);
   const [address, setAddress] = useState('');
-  console.log(address);
+  // console.log(address);
   const getGeocodingData = async (latitude, longitude) => {
     try {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyACW1po0qU1jptIybBPGdFY-_MrycQPjfk`,
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCom4BCfTVsw3o22AYg69Y7EovmLfV_Alw`,
       );
       const data = await response.json();
       if (data.results.length > 0) {
@@ -180,12 +202,60 @@ const Home = ({navigation, route}) => {
       getGeocodingData(lati, longi);
     }
   }, [lati, longi]);
-  const [position, setposition] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
+
+  const [drivercab, setDrivercab] = useState([]);
+  // console.log(drivercab?.lat, 'drivercab');
+  const getallDriver = async () => {
+    let res = await axios.get(
+      'http://192.168.1.19:8051/api/v1/driver/getdriver',
+    );
+    if (res.status === 200) {
+      setDrivercab(res.data.success);
+    }
+  };
+  useEffect(() => {
+    getallDriver();
+  }, []);
+
+  // Function to calculate distance between two coordinates
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the earth in km
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) *
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+    return distance;
+  };
+
+  // Function to filter drivers within 5 kilometers of current location
+  const filterDriversWithin5Kms = () => {
+    if (lati && longi) {
+      return drivercab.filter(driver => {
+        const driverLocation = {
+          latitude: parseFloat(driver.lat),
+          longitude: parseFloat(driver.long),
+        };
+        const userLocation = {
+          latitude: parseFloat(lati),
+          longitude: parseFloat(longi),
+        };
+        const distance = calculateDistance(
+          userLocation.latitude,
+          userLocation.longitude,
+          driverLocation.latitude,
+          driverLocation.longitude,
+        );
+        return distance <= 1; // 5 kilometers
+      });
+    }
+    return [];
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -203,7 +273,7 @@ const Home = ({navigation, route}) => {
               showsCompass={true}
               scrollEnabled={true}
               zoomEnabled={true}
-              height={responsiveScreenHeight(58)}
+              height={responsiveScreenHeight(65)}
               width={responsiveScreenWidth(100)}
               pitchEnabled={true}
               rotateEnabled={true}>
@@ -214,16 +284,32 @@ const Home = ({navigation, route}) => {
                     coordinate={{
                       latitude: parseFloat(lati),
                       longitude: parseFloat(longi),
-                    }}>
-                    {/* <Image
-                      style={{width: 20, height: 30}}
-                      source={require('../assets/images/man.png')}
-                    /> */}
+                    }}
+                    description={address}
+                    title="Current Location">
+                    <Image source={require('../Assets/pin_icon_dest.png')} />
                   </Marker>
                 </>
               ) : (
                 <></>
               )}
+              {filterDriversWithin5Kms()
+                ?.filter(itemcab => itemcab.status === 'online')
+                ?.map((driver, index) => (
+                  <Marker
+                    key={index}
+                    coordinate={{
+                      latitude: parseFloat(driver.lat),
+                      longitude: parseFloat(driver.long),
+                    }}
+                    // title={driver.name} // Use driver's name as the marker title
+                  >
+                    <Image
+                      source={require('../Assets/Taxi-Right.png')}
+                      style={{height: 35, width: 35}}
+                    />
+                  </Marker>
+                ))}
             </MapView>
             {/* <Image
               source={require('../Assets/map.png')}
@@ -249,8 +335,8 @@ const Home = ({navigation, route}) => {
                 <TextInput
                   style={{flex: 1}}
                   numberOfLines={2}
-                  placeholder="Current location"
-                  // placeholder={address}
+                  // placeholder="Current location"
+                  placeholder={address}
                   placeholderTextColor={Color.black}
                 />
               </View>
@@ -358,133 +444,29 @@ const Home = ({navigation, route}) => {
                   <>
                     {acc2 ? (
                       <>
-                        {/* <View>
-                          <View
-                            style={{
-                              marginHorizontal: 10,
-                            }}>
-                            <Text style={styles.text}>Select City</Text>
-                            <View style={styles.picker}>
-                              <Picker
-                                selectedValue={selectedLanguage}
-                                onValueChange={(itemValue, itemIndex) =>
-                                  setSelectedLanguage(itemValue)
-                                }
-                                itemStyle={styles.pickerItem}>
-                                <Picker.Item
-                                  label="Bangalore"
-                                  value="Bangalore"
-                                />
-                                <Picker.Item
-                                  label="Bangalore"
-                                  value="Bangalore"
-                                />
-                              </Picker>
-                            </View>
-                            <Text style={styles.text}>
-                              Select pick up location
-                            </Text>
-                            <View style={styles.picker}>
-                              <Picker
-                                selectedValue={selectedLanguage}
-                                onValueChange={(itemValue, itemIndex) =>
-                                  setSelectedLanguage(itemValue)
-                                }
-                                itemStyle={styles.pickerItem}>
-                                <Picker.Item
-                                  label="Bangalore"
-                                  value="Bangalore"
-                                />
-                                <Picker.Item
-                                  label="Bangalore"
-                                  value="Bangalore"
-                                />
-                              </Picker>
-                            </View>
-
-                            <Text style={styles.text}>
-                              Select Drop up location
-                            </Text>
-                            <View style={styles.picker}>
-                              <Picker
-                                selectedValue={selectedLanguage}
-                                onValueChange={(itemValue, itemIndex) =>
-                                  setSelectedLanguage(itemValue)
-                                }
-                                itemStyle={styles.pickerItem}>
-                                <Picker.Item
-                                  label="Bangalore"
-                                  value="Bangalore"
-                                />
-                                <Picker.Item
-                                  label="Bangalore"
-                                  value="Bangalore"
-                                />
-                              </Picker>
-                            </View>
-                          </View>
+                        <TouchableOpacity onPress={handlePackages}>
                           <View
                             style={{
                               flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              marginHorizontal: 10,
-                              marginBottom: 5,
+                              alignItems: 'center',
+                              backgroundColor: COLORS.grey,
+                              borderRadius: 5,
+                              borderWidth: 1,
+                              borderColor: COLORS.grey,
+                              paddingHorizontal: 10,
+                              height: responsiveHeight(7),
                             }}>
-                            <View>
-                              <Text style={styles.text}>Pick up date</Text>
-                              <TouchableOpacity
-                                onPress={() => setModalVisible(true)}>
-                                <Text style={styles.dates}>
-                                  {date.toDateString()}
-                                </Text>
-                              </TouchableOpacity>
-                              <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={modalVisible}
-                                onRequestClose={() => {
-                                  setModalVisible(false);
-                                }}>
-                                <View style={styles.centeredView}>
-                                  <View style={styles.modalView}>
-                                    <DatePicker
-                                      mode="date"
-                                      date={date}
-                                      onDateChange={handleDateChange}
-                                    />
-                                    <Button
-                                      title="Close"
-                                      onPress={() => setModalVisible(false)}
-                                    />
-                                  </View>
-                                </View>
-                              </Modal>
-                            </View>
-                            <View>
-                              <Text style={styles.text}>Pick up Time</Text>
-                              <TouchableOpacity onPress={showTimepicker}>
-                                <Text style={styles.dates}>
-                                  {time.toTimeString()}
-                                </Text>
-                              </TouchableOpacity>
-                              {showTimePicker && (
-                                <DateTimePicker
-                                  testID="dateTimePicker"
-                                  value={time}
-                                  mode="time"
-                                  is24Hour={true}
-                                  display="default"
-                                  onChange={onChange}
-                                />
-                              )}
-                            </View>
+                            <Icon
+                              name="search"
+                              size={20}
+                              color={COLORS.black}
+                              style={styles.icon}
+                            />
+                            <Text style={styles.textInput}>
+                              Where are you going
+                            </Text>
                           </View>
-                          <View style={{marginHorizontal: 20}}>
-                            <AnimatedButton
-                              title="Search"
-                              onPress={handlePressPackage}></AnimatedButton>
-                          </View>
-                        </View> */}
+                        </TouchableOpacity>
                       </>
                     ) : (
                       <></>

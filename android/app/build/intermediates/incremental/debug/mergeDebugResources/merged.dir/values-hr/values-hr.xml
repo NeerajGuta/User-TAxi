@@ -141,4 +141,5 @@
     <string gender="unknown" name="tablist_description">Popis kartica</string>
     <string gender="unknown" name="timer_description">Mjerač vremena</string>
     <string gender="unknown" name="toolbar_description">Traka s alatima</string>
+    <string name="wallet_buy_button_place_holder">Kupi putem Googlea</string>
 </resources>

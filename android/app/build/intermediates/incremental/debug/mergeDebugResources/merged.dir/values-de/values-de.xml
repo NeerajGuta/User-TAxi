@@ -135,4 +135,5 @@
     <string gender="unknown" name="summary_description">Übersicht</string>
     <string gender="unknown" name="tablist_description">Tab-Liste</string>
     <string gender="unknown" name="toolbar_description">Symbolleiste</string>
+    <string name="wallet_buy_button_place_holder">Über Google kaufen</string>
 </resources>

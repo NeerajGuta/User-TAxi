@@ -142,4 +142,5 @@
     <string gender="unknown" name="tablist_description">Список вкладок</string>
     <string gender="unknown" name="timer_description">Таймер</string>
     <string gender="unknown" name="toolbar_description">Панель инструментов</string>
+    <string name="wallet_buy_button_place_holder">Купить через Google</string>
 </resources>

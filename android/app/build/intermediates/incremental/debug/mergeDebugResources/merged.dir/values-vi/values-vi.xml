@@ -138,4 +138,5 @@
     <string gender="unknown" name="tablist_description">Danh sách tab</string>
     <string gender="unknown" name="timer_description">Bộ hẹn giờ</string>
     <string gender="unknown" name="toolbar_description">Thanh công cụ</string>
+    <string name="wallet_buy_button_place_holder">Mua hàng bằng Google</string>
 </resources>

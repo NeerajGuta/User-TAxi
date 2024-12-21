@@ -139,4 +139,5 @@
     <string gender="unknown" name="tablist_description">Λίστα καρτελών</string>
     <string gender="unknown" name="timer_description">Χρονόμετρο</string>
     <string gender="unknown" name="toolbar_description">Γραμμή εργαλείων</string>
+    <string name="wallet_buy_button_place_holder">Αγορά μέσω Google</string>
 </resources>

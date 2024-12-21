@@ -120,4 +120,5 @@
     <string gender="unknown" name="state_off_description">ປິດ</string>
     <string gender="unknown" name="state_on_description">ເປີດ</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="wallet_buy_button_place_holder">ຊື້ໂດຍໃຊ້ Google</string>
 </resources>

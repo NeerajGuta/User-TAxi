@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "863580796818",
+    "project_id": "taxigo-6ad50",
+    "storage_bucket": "taxigo-6ad50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863580796818:android:8f7fd700baad506de0734b",
+        "android_client_info": {
+          "package_name": "com.taxi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNHrWri4YYs2QA5mYten5QZP3SVFjzw58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

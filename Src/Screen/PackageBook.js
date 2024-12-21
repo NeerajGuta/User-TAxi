@@ -8,35 +8,90 @@ import {
   //   CheckBox,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Color from '../Constant/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AnimatedButton from '../Constant/Button';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const PackageBook = ({navigation}) => {
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cvv, setCVV] = useState('');
-  const [billingAddress, setBillingAddress] = useState('');
-  const [promoCode, setPromoCode] = useState('');
-  const [agreeTerms, setAgreeTerms] = useState(false);
+const PackageBook = ({navigation, route}) => {
+  const [user, setUser] = useState('');
+  console.log(user, 'user');
+  const getUser = async () => {
+    let user = await AsyncStorage.getItem('user');
+    let currentuser = JSON.parse(user);
+    setUser(currentuser);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const {totalPrice, pickupLocation, packages, date, time, packagesdata} =
+    route.params;
+  console.log(
+    totalPrice,
+    pickupLocation.data.description,
+    packages,
+    date,
+    time,
+    packagesdata.vehicletype,
+    'totalPrice',
+  );
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setphone] = useState('');
+  const [address, setaddress] = useState('');
+
+  const bookPackages = async () => {
+    if (!name || !email || !phone || !address) {
+      return Alert.alert('Please fill all the field !!!');
+    }
+    try {
+      const config = {
+        url: '/api/v1/user/addbookingpackages',
+        method: 'post',
+        baseURL: 'http://192.168.1.19:8051',
+        headers: {'content-type': 'application/json'},
+        data: {
+          userId: user?._id,
+          name,
+          email,
+          mobileno: phone,
+          address,
+          triptype: packages,
+          vehicletype: packagesdata.vehicletype,
+          pickuplocation: pickupLocation.data.description,
+          pickupdate: date,
+          pickuptime: time,
+          totalfare: totalPrice,
+        },
+      };
+      let res = await axios(config);
+      if (res.status === 200) {
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <SafeAreaView styles={{flex: 1, backgroundColor: Color.backgroundColor}}>
-      <StatusBar backgroundColor={Color.buttonColor} barStyle="light-content" />
       <View style={styles.conatiner}>
         <AntDesign
           name="arrowleft"
           size={20}
+          color="black"
           style={{paddingLeft: 10}}
           onPress={() => {
             navigation.goBack();
           }}
         />
-        <Text style={{fontSize: 16, fontWeight: '600', color: Color.black}}>
-          Traveller Details
-        </Text>
       </View>
       <View style={styles.logins}>
         <View style={{marginBottom: 12}}>
@@ -44,7 +99,9 @@ const PackageBook = ({navigation}) => {
             <TextInput
               placeholder="Enter your Name"
               placeholderTextColor={Color.black}
-              keyboardType="email-address"
+              keyboardType="text"
+              value={name}
+              onChangeText={name => setName(name)}
               style={{
                 width: '100%',
               }}
@@ -57,6 +114,8 @@ const PackageBook = ({navigation}) => {
               placeholder="Enter your email address"
               placeholderTextColor={Color.black}
               keyboardType="email-address"
+              value={email}
+              onChangeText={email => setEmail(email)}
               style={{
                 width: '100%',
               }}
@@ -68,7 +127,9 @@ const PackageBook = ({navigation}) => {
             <TextInput
               placeholder="Enter your Mobile No"
               placeholderTextColor={Color.black}
-              keyboardType="email-address"
+              keyboardType="number"
+              value={phone}
+              onChangeText={phone => setphone(phone)}
               style={{
                 width: '100%',
               }}
@@ -80,7 +141,9 @@ const PackageBook = ({navigation}) => {
             <TextInput
               placeholder="Enter your address"
               placeholderTextColor={Color.black}
-              keyboardType="email-address"
+              keyboardType="text"
+              value={address}
+              onChangeText={address => setaddress(address)}
               style={{
                 width: '100%',
               }}
@@ -96,31 +159,40 @@ const PackageBook = ({navigation}) => {
               fontWeight: 'bold',
               marginBottom: 10,
               textAlign: 'center',
+              color: Color?.black,
             }}>
             Booking Summary
           </Text>
-          <View style={styles.cabbook}>
-            <Text>Pickup Location: </Text>
-            <Text style={{fontWeight: 'bold'}}>123 Main St</Text>
+          <View>
+            <Text style={styles.textp}>Pickup Location: </Text>
+            <Text style={{fontWeight: 'bold'}}>
+              {pickupLocation.data.description}
+            </Text>
           </View>
           <View style={styles.cabbook}>
-            <Text>Pickup Location: </Text>
-            <Text style={{fontWeight: 'bold'}}>123 Main St</Text>
+            <Text style={styles.textp}>Trip Type: </Text>
+            <Text style={{fontWeight: 'bold'}}>{packages}</Text>
           </View>
           <View style={styles.cabbook}>
-            <Text>Date: </Text>
-            <Text style={{fontWeight: 'bold'}}>April 3, 2024</Text>
+            <Text style={styles.textp}>Vehicle Type: </Text>
+            <Text style={{fontWeight: 'bold'}}>
+              {packagesdata?.vehicletype}
+            </Text>
           </View>
           <View style={styles.cabbook}>
-            <Text>Time: </Text>
-            <Text style={{fontWeight: 'bold'}}>10:00 AM</Text>
+            <Text style={styles.textp}>Pickup Date: </Text>
+            <Text style={{fontWeight: 'bold'}}>{date}</Text>
           </View>
           <View style={styles.cabbook}>
-            <Text>Total Fare: </Text>
-            <Text style={{fontWeight: 'bold'}}>$30.00</Text>
+            <Text style={styles.textp}>Time: </Text>
+            <Text style={{fontWeight: 'bold'}}>{time}</Text>
+          </View>
+          <View style={styles.cabbook}>
+            <Text style={styles.textp}>Total Fare: </Text>
+            <Text style={{fontWeight: 'bold'}}>₹ {totalPrice?.toFixed(2)}</Text>
           </View>
         </View>
-        <AnimatedButton title="Continue" />
+        <AnimatedButton title="Continue" onPress={bookPackages} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -133,7 +205,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 20,
-    backgroundColor: Color.buttonColor,
+    backgroundColor: Color.backgroundColor,
     padding: 20,
   },
   input: {
@@ -149,8 +221,7 @@ const styles = StyleSheet.create({
   logins: {
     paddingHorizontal: 20,
     paddingVertical: 20,
-    marginTop: 10,
-    borderTopLeftRadius: 120,
+    backgroundColor: Color.backgroundColor,
   },
   cabbook: {
     flexDirection: 'row',
@@ -162,5 +233,10 @@ const styles = StyleSheet.create({
   container1: {
     paddingVertical: 10,
     paddingHorizontal: 20,
+    backgroundColor: Color.backgroundColor,
+  },
+  textp: {
+    color: 'black',
+    fontWeight: '600',
   },
 });

@@ -147,5 +147,6 @@
     <string gender="unknown" name="tablist_description">Lijst met tabbladen</string>
     <string name="time_tag">Tijd is</string>
     <string gender="unknown" name="toolbar_description">Werkbalk</string>
+    <string name="wallet_buy_button_place_holder">Kopen met Google</string>
     <string name="year_description">Selecteer jaar</string>
 </resources>

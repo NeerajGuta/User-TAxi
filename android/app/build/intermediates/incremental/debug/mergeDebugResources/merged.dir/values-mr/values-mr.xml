@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">टॅब लिस्ट</string>
     <string gender="unknown" name="timer_description">टायमर</string>
     <string gender="unknown" name="toolbar_description">टूल बार</string>
+    <string name="wallet_buy_button_place_holder">Google सह खरेदी करा</string>
 </resources>

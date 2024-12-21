@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">頁籤清單</string>
     <string gender="unknown" name="timer_description">計時器</string>
     <string gender="unknown" name="toolbar_description">工具列</string>
+    <string name="wallet_buy_button_place_holder">透過 Google 購物</string>
 </resources>

@@ -142,4 +142,5 @@
     <string gender="unknown" name="tablist_description">Seznam karet</string>
     <string gender="unknown" name="timer_description">Časovač</string>
     <string gender="unknown" name="toolbar_description">Panel nástrojů</string>
+    <string name="wallet_buy_button_place_holder">Koupit pomocí Googlu</string>
 </resources>

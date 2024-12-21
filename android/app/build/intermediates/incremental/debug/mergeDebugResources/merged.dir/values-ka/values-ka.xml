@@ -139,4 +139,5 @@
     <string gender="unknown" name="tablist_description">ჩანართების სია</string>
     <string gender="unknown" name="timer_description">ტაიმერი</string>
     <string gender="unknown" name="toolbar_description">ხელსაწყოების ზოლი</string>
+    <string name="wallet_buy_button_place_holder">Google-ით ყიდვა</string>
 </resources>

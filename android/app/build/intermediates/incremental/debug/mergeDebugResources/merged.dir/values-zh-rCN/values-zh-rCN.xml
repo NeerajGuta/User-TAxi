@@ -60,7 +60,7 @@
     <string name="common_google_play_services_wear_update_text">必须使用新版 Google Play 服务。该服务很快就会自行更新。</string>
     <string name="common_open_on_phone">在手机上打开</string>
     <string name="common_signin_button_text">登录</string>
-    <string name="common_signin_button_text_long">使用 Google 帐号登录</string>
+    <string name="common_signin_button_text_long">使用 Google 账号登录</string>
     <string name="error_icon_content_description">错误</string>
     <string name="exposed_dropdown_menu_content_description">显示下拉菜单</string>
     <string gender="unknown" name="header_description">标题</string>
@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">选项卡列表</string>
     <string gender="unknown" name="timer_description">倒计时</string>
     <string gender="unknown" name="toolbar_description">工具栏</string>
+    <string name="wallet_buy_button_place_holder">通过 Google 购买</string>
 </resources>

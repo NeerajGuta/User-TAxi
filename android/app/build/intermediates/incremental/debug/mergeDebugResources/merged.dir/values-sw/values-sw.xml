@@ -139,4 +139,5 @@
     <string gender="unknown" name="tablist_description">Orodha ya Kichupo</string>
     <string gender="unknown" name="timer_description">Kipima muda</string>
     <string gender="unknown" name="toolbar_description">Upau wa Zana</string>
+    <string name="wallet_buy_button_place_holder">Nunua ukitumia Google Wallet</string>
 </resources>

@@ -139,4 +139,5 @@
     <string gender="unknown" name="tablist_description">Sekme Listesi</string>
     <string gender="unknown" name="timer_description">Zamanlayıcı</string>
     <string gender="unknown" name="toolbar_description">Araç Çubuğu</string>
+    <string name="wallet_buy_button_place_holder">Google ile satın al</string>
 </resources>

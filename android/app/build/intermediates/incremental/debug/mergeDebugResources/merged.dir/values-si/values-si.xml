@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">ටැබ ලැයිස්තුව</string>
     <string gender="unknown" name="timer_description">කාල ගණකය</string>
     <string gender="unknown" name="toolbar_description">මෙවලම් තීරුව</string>
+    <string name="wallet_buy_button_place_holder">Google සමඟ මිලදී ගන්න</string>
 </resources>

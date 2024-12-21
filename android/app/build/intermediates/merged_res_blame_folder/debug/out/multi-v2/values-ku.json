@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.taxi.app-mergeDebugResources-40:/values-ku/values-ku.xml",
+            "outputFile": "com.taxi.app-mergeDebugResources-47:/values-ku/values-ku.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\DELL\\.gradle\\caches\\transforms-3\\e1231b5b187cb579b629117f9511a862\\transformed\\jetified-react-android-0.73.6-debug\\res\\values-ku\\values-ku.xml",
+                    "source": "C:\\Users\\DELL\\.gradle\\caches\\transforms-3\\eea54746e044c45b755b6a521b0363eb\\transformed\\jetified-react-android-0.73.6-debug\\res\\values-ku\\values-ku.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
                         "startColumns": "4,4,4,4,4,4",

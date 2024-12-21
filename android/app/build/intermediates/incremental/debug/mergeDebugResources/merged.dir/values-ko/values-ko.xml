@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">탭 리스트</string>
     <string gender="unknown" name="timer_description">타이머</string>
     <string gender="unknown" name="toolbar_description">도구 표시줄</string>
+    <string name="wallet_buy_button_place_holder">Google로 구매</string>
 </resources>

@@ -122,4 +122,5 @@
     <string gender="unknown" name="state_on_description">naka-ON</string>
     <string gender="unknown" name="state_unselected_description">na-unselect</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="wallet_buy_button_place_holder">Bumili gamit ang Google</string>
 </resources>

@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">பிரிவுப் பட்டியல்</string>
     <string gender="unknown" name="timer_description">டைமர்</string>
     <string gender="unknown" name="toolbar_description">கருவிப்பட்டி</string>
+    <string name="wallet_buy_button_place_holder">Google மூலம் வாங்கு</string>
 </resources>

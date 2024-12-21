@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+// import {FlatList, TextInput} from 'react-native-gesture-handler';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+  FlatList,
+} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import COLORS from '../Constant/Color';
 import AnimatedButton from '../Constant/Button';
@@ -11,20 +19,92 @@ import {
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
 
+import axios from 'axios';
+
 const Local = ({navigation}) => {
   const [pickupLocation, setPickupLocation] = useState(null);
+  // console.log('pickupLocation', pickupLocation);
   const [dropLocation, setDropLocation] = useState(null);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+  const YOUR_GOOGLE_API_KEY = 'AIzaSyACW1po0qU1jptIybBPGdFY-_MrycQPjfk';
+
+  const [inputValue, setInputValue] = useState('');
+  const [options, setOptions] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState('');
+  const [lat, setLat] = useState(null);
+  const [lng, setLng] = useState(null);
+
+  const [tolocation, settolocation] = useState('');
+  const [latto, setLatto] = useState(null);
+  const [lngto, setLngto] = useState(null);
+  const API_KEY = '511ee4a684a7432389e220e510e77a73';
+  const handleSearch1 = async inputValue => {
+    if (!inputValue) return;
+    // if (!selectedCity) return Alert.alert("Error", "Please select city!");
+
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
+      `${inputValue}`,
+    )}&key=${API_KEY}&limit=5&countrycode=IN`;
+    try {
+      const response = await axios.get(url);
+      const results = response.data.results;
+
+      const cityResults = results.filter(
+        result =>
+          result.components.village ||
+          result.components.town ||
+          result.components.city,
+      );
+      const formattedOptions = cityResults.map(result => ({
+        label: result.formatted, // Label to display
+        value: result.geometry, // Value containing coordinates
+      }));
+
+      setOptions(formattedOptions);
+    } catch (error) {
+      console.error('Error fetching geocode data:', error);
+    }
+  };
+
+  // const debouncedSearch = debounce(handleSearch1, 500);
+
+  const handleInputChange = text => {
+    setInputValue(text);
+    handleSearch1(text); // Fetch options on input change
+  };
+  const handleInputChange2 = text => {
+    settolocation(text);
+    handleSearch1(text); // Fetch options on input change
+  };
+  const handleSelect = item => {
+    setSelectedLocation(item.label);
+    setPickupLocation(item.label);
+    setLat(item.value.lat);
+    setLng(item.value.lng);
+    setInputValue(item.label); // Set input value to the selected label
+    setIsDropdownVisible(false); // Hide dropdown after selection
+  };
+
+  const [droploc, setdroploc] = useState(false);
+  const handleSelect2 = item => {
+    settolocation(item.label);
+    setDropLocation(item?.label);
+    setLatto(item.value.lat);
+    setLngto(item.value.lng);
+
+    setdroploc(false); // Hide dropdown after selection
+  };
 
   const handlePress = () => {
-    if (!pickupLocation || !dropLocation) {
+    if (!selectedLocation || !dropLocation) {
       return showMessage({
         message: 'Please select both pickup and drop locations',
         type: 'danger',
       });
-    } else navigation.navigate('SearchVehicle', {pickupLocation, dropLocation});
+    } else navigation.navigate('SearchVehicle', {pickupLocation, dropLocation,lat,lng,latto,lngto});
   };
 
-  const YOUR_GOOGLE_API_KEY = 'AIzaSyACW1po0qU1jptIybBPGdFY-_MrycQPjfk';
   return (
     <View style={styles.container}>
       <View style={styles.backButtonContainer}>
@@ -35,11 +115,10 @@ const Local = ({navigation}) => {
 
       <View style={styles.autocompleteContainer}>
         <Text style={styles.text}>Pick up location</Text>
-        <GooglePlacesAutocomplete
+        {/* <GooglePlacesAutocomplete
           placeholder="Search Pick up location"
           onPress={(data, details = null) => {
             setPickupLocation({data, details});
-            // console.log(data, details);
           }}
           query={{
             key: YOUR_GOOGLE_API_KEY,
@@ -56,9 +135,60 @@ const Local = ({navigation}) => {
           styles={{
             textInput: styles.textInput,
           }}
+        /> */}
+        <TextInput
+          style={styles.textInput}
+          placeholder="Search Pick up location"
+          value={inputValue}
+          onChangeText={handleInputChange}
+          onFocus={() => setIsDropdownVisible(true)} // Show dropdown on focus
         />
+        {isDropdownVisible && options.length > 0 && (
+          <FlatList
+            data={options}
+            keyExtractor={(item, index) => index.toString()}
+            style={{maxHeight: 200, marginTop: 10}}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                style={{
+                  padding: 10,
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#ddd',
+                }}
+                onPress={() => handleSelect(item)}>
+                <Text>{item.label}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        )}
+
         <Text style={styles.text}>Drop up location</Text>
-        <GooglePlacesAutocomplete
+        <TextInput
+          style={styles.textInput}
+          placeholder="Search Drop up location"
+          value={tolocation}
+          onChangeText={handleInputChange2}
+          onFocus={() => setdroploc(true)} // Show dropdown on focus
+        />
+        {droploc && options.length > 0 && (
+          <FlatList
+            data={options}
+            keyExtractor={(item, index) => index.toString()}
+            style={{maxHeight: 200, marginTop: 10}}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                style={{
+                  padding: 10,
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#ddd',
+                }}
+                onPress={() => handleSelect2(item)}>
+                <Text>{item.label}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        )}
+        {/* <GooglePlacesAutocomplete
           placeholder="Search Drop up location"
           onPress={(data, details = null) => {
             setDropLocation({data, details});
@@ -79,7 +209,7 @@ const Local = ({navigation}) => {
           styles={{
             textInput: styles.textInput,
           }}
-        />
+        /> */}
       </View>
 
       <View style={styles.buttonContainer}>
@@ -96,6 +226,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingHorizontal: 5,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   backButtonContainer: {
     width: responsiveScreenWidth(35),
@@ -118,6 +253,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.black,
     paddingBottom: 10,
+  },
+  input: {
+    height: 50,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingLeft: 10,
+    marginBottom: 20,
+    backgroundColor: '#fff',
   },
   textInput: {
     fontSize: responsiveFontSize(2),

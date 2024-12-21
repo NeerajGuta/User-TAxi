@@ -144,4 +144,5 @@
     <string gender="unknown" name="tablist_description">قائمة علامات التبويب</string>
     <string gender="unknown" name="timer_description">مؤقِت</string>
     <string gender="unknown" name="toolbar_description">شريط الأدوات</string>
+    <string name="wallet_buy_button_place_holder">الشراء عبر Google</string>
 </resources>

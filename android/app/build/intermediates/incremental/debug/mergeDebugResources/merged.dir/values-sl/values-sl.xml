@@ -141,4 +141,5 @@
     <string gender="unknown" name="tablist_description">Seznam z zavihki</string>
     <string gender="unknown" name="timer_description">Časovnik</string>
     <string gender="unknown" name="toolbar_description">Vrstica z orodji</string>
+    <string name="wallet_buy_button_place_holder">Nakup z Googlom</string>
 </resources>

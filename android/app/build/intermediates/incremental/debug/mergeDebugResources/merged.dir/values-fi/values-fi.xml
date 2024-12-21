@@ -150,5 +150,6 @@
     <string name="time_tag">Kello on</string>
     <string gender="unknown" name="timer_description">Ajastin</string>
     <string gender="unknown" name="toolbar_description">Työkalupalkki</string>
+    <string name="wallet_buy_button_place_holder">Maksa Googlen kautta</string>
     <string name="year_description">Valitse Vuosi</string>
 </resources>

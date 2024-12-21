@@ -139,4 +139,5 @@
     <string gender="unknown" name="tablist_description">Lista kart</string>
     <string gender="unknown" name="timer_description">Czasomierz</string>
     <string gender="unknown" name="toolbar_description">Pasek narzędzi</string>
+    <string name="wallet_buy_button_place_holder">Kup to z Google</string>
 </resources>

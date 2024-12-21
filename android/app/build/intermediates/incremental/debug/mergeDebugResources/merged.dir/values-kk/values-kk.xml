@@ -119,4 +119,5 @@
     <string gender="unknown" name="state_off_description">өшірулі</string>
     <string gender="unknown" name="state_on_description">қосулы</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="wallet_buy_button_place_holder">Google арқылы сатып алу</string>
 </resources>

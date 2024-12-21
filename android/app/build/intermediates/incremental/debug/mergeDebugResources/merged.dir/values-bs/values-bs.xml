@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">Lista kartica</string>
     <string gender="unknown" name="timer_description">Tajmer</string>
     <string gender="unknown" name="toolbar_description">Traka alata</string>
+    <string name="wallet_buy_button_place_holder">Kupi putem Googlea</string>
 </resources>

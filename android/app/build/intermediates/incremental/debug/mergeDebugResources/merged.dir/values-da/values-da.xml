@@ -136,4 +136,5 @@
     <string gender="unknown" name="summary_description">Oversigt</string>
     <string gender="unknown" name="tablist_description">Liste over faner</string>
     <string gender="unknown" name="toolbar_description">Værktøjslinje</string>
+    <string name="wallet_buy_button_place_holder">Køb med Google</string>
 </resources>

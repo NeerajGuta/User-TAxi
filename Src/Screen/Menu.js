@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -13,6 +13,8 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {launchImageLibrary} from 'react-native-image-picker';
+import RNRestart from 'react-native-restart';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Menu({navigation}) {
   const [form, setForm] = useState({
@@ -29,7 +31,25 @@ export default function Menu({navigation}) {
       }
     });
   };
+  const [user, setUser] = useState({});
+  const getUser = async () => {
+    const data = await AsyncStorage.getItem('user');
+    setUser(JSON.parse(data));
+  };
 
+  const signOutuser = async () => {
+    try {
+      let signOut = await AsyncStorage.removeItem('user');
+      // navigation.navigate('LoginPhone');
+      RNRestart.Restart();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={styles.container}>
@@ -43,7 +63,9 @@ export default function Menu({navigation}) {
             ) : (
               <Image
                 source={{
-                  uri: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80',
+                  uri:
+                    `http://192.168.1.19:8051/User/${user?.profileimage}` ||
+                    'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80',
                 }}
                 style={styles.profileAvatar}
               />
@@ -59,10 +81,8 @@ export default function Menu({navigation}) {
           </TouchableOpacity>
 
           <View>
-            <Text style={styles.profileName}>Raghavendra Chaubey</Text>
-            <Text style={styles.profileAddress}>
-              123 Maple Street. Singapura, Bangalore
-            </Text>
+            <Text style={styles.profileName}>{user?.name}</Text>
+            <Text style={styles.profileAddress}>{user?.address}</Text>
           </View>
         </View>
 
@@ -85,7 +105,7 @@ export default function Menu({navigation}) {
 
               <FeatherIcon color="#C6C6C6" name="chevron-right" size={20} />
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 navigation.navigate('ForgetPassword');
               }}
@@ -99,21 +119,16 @@ export default function Menu({navigation}) {
               <View style={styles.rowSpacer} />
 
               <FeatherIcon color="#C6C6C6" name="chevron-right" size={20} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('TabtopView');
-              }}
-              style={styles.row}>
-              <View style={[styles.rowIcon, {backgroundColor: '#32c759'}]}>
-                <FeatherIcon color="#fff" name="navigation" size={20} />
+            </TouchableOpacity> */}
+            <TouchableOpacity onPress={() => navigation.navigate('Wallet')}>
+              <View style={styles.row}>
+                <View style={[styles.rowIcon, {backgroundColor: '#38C959'}]}>
+                  <Ionicons color="#fff" name="wallet-outline" size={20} />
+                </View>
+                <Text style={styles.rowLabel}>Wallet</Text>
+                <View style={styles.rowSpacer} />
+                <FeatherIcon color="#C6C6C6" name="chevron-right" size={20} />
               </View>
-
-              <Text style={styles.rowLabel}>Booking History</Text>
-
-              <View style={styles.rowSpacer} />
-
-              <FeatherIcon color="#C6C6C6" name="chevron-right" size={20} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate('Notification')}>
@@ -130,7 +145,7 @@ export default function Menu({navigation}) {
 
                 <View style={styles.rowSpacer} />
 
-                <Text
+                {/* <Text
                   style={{
                     backgroundColor: 'red',
                     color: 'white',
@@ -138,18 +153,25 @@ export default function Menu({navigation}) {
                     padding: 10,
                   }}>
                   2
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Wallet')}>
-              <View style={styles.row}>
-                <View style={[styles.rowIcon, {backgroundColor: '#38C959'}]}>
-                  <Ionicons color="#fff" name="wallet-outline" size={20} />
-                </View>
-                <Text style={styles.rowLabel}>Wallet</Text>
-                <View style={styles.rowSpacer} />
+                </Text> */}
                 <FeatherIcon color="#C6C6C6" name="chevron-right" size={20} />
               </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('TabtopView');
+              }}
+              style={styles.row}>
+              <View style={[styles.rowIcon, {backgroundColor: '#32c759'}]}>
+                <FeatherIcon color="#fff" name="navigation" size={20} />
+              </View>
+
+              <Text style={styles.rowLabel}>Booking History</Text>
+
+              <View style={styles.rowSpacer} />
+
+              <FeatherIcon color="#C6C6C6" name="chevron-right" size={20} />
             </TouchableOpacity>
           </View>
 
@@ -266,11 +288,7 @@ export default function Menu({navigation}) {
           </View>
         </ScrollView>
         <View style={styles.section}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('LoginPhone');
-            }}
-            style={styles.row}>
+          <TouchableOpacity onPress={signOutuser} style={styles.row}>
             <View style={[styles.rowIcon, {backgroundColor: 'red'}]}>
               <AntDesign color="#fff" name="logout" size={20} />
             </View>

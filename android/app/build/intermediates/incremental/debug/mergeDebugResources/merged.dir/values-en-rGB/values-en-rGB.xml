@@ -124,4 +124,5 @@
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
     <string gender="unknown" name="tablist_description">Tab list</string>
     <string gender="unknown" name="toolbar_description">Tool bar</string>
+    <string name="wallet_buy_button_place_holder">Buy with Google</string>
 </resources>

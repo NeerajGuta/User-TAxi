@@ -139,4 +139,5 @@
     <string gender="unknown" name="tablist_description">Vahekaartide loend</string>
     <string gender="unknown" name="timer_description">Taimer</string>
     <string gender="unknown" name="toolbar_description">Tööriistariba</string>
+    <string name="wallet_buy_button_place_holder">Osta Google\'iga</string>
 </resources>

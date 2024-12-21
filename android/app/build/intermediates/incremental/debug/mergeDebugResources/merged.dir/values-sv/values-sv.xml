@@ -148,5 +148,6 @@
     <string gender="unknown" name="tablist_description">Fliklista</string>
     <string name="time_tag">Tiden är</string>
     <string gender="unknown" name="toolbar_description">Verktygsfält</string>
+    <string name="wallet_buy_button_place_holder">Köp med Google</string>
     <string name="year_description">Välj ett år</string>
 </resources>

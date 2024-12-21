@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">Lista de pestañas</string>
     <string gender="unknown" name="timer_description">Temporizador</string>
     <string gender="unknown" name="toolbar_description">Barra de herramientas</string>
+    <string name="wallet_buy_button_place_holder">Comprar con Google</string>
 </resources>

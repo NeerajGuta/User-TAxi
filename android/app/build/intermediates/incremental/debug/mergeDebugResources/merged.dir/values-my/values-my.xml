@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">တက်ဘ်စာရင်း</string>
     <string gender="unknown" name="timer_description">အချိန်တိုင်းစက်</string>
     <string gender="unknown" name="toolbar_description">ကိရိယာ ဘားတန်း</string>
+    <string name="wallet_buy_button_place_holder">Google ဖြင့်ဝယ်ပါ</string>
 </resources>

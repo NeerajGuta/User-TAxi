@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">863580796818</string>
+    <string name="google_api_key" translatable="false">AIzaSyCNHrWri4YYs2QA5mYten5QZP3SVFjzw58</string>
+    <string name="google_app_id" translatable="false">1:863580796818:android:8f7fd700baad506de0734b</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCNHrWri4YYs2QA5mYten5QZP3SVFjzw58</string>
+    <string name="google_storage_bucket" translatable="false">taxigo-6ad50.appspot.com</string>
+    <string name="project_id" translatable="false">taxigo-6ad50</string>
+</resources>

@@ -119,4 +119,5 @@
     <string gender="unknown" name="state_off_description">өчүк</string>
     <string gender="unknown" name="state_on_description">күйүк</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="wallet_buy_button_place_holder">Google аркылуу сатып алуу</string>
 </resources>

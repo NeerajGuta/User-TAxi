@@ -150,5 +150,6 @@
     <string name="time_tag">Tiden er</string>
     <string gender="unknown" name="timer_description">Tidsur</string>
     <string gender="unknown" name="toolbar_description">Verktøylinje</string>
+    <string name="wallet_buy_button_place_holder">Kjøp med Google</string>
     <string name="year_description">Velg år</string>
 </resources>

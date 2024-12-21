@@ -141,4 +141,5 @@
     <string gender="unknown" name="tablist_description">Листа картица</string>
     <string gender="unknown" name="timer_description">Тајмер</string>
     <string gender="unknown" name="toolbar_description">Трака са алаткама</string>
+    <string name="wallet_buy_button_place_holder">Купи помоћу Google-а</string>
 </resources>

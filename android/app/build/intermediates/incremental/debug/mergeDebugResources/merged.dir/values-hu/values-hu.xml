@@ -140,4 +140,5 @@
     <string gender="unknown" name="tablist_description">Lapfülek listája</string>
     <string gender="unknown" name="timer_description">Időmérő</string>
     <string gender="unknown" name="toolbar_description">Eszköztár</string>
+    <string name="wallet_buy_button_place_holder">Vásárlás a Google-lal</string>
 </resources>

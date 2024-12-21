@@ -34,7 +34,8 @@ const BookingHistory = () => {
       setRideHistory(initialRideHistory);
     }, 1000); // Simulated delay of 1 second
   };
-
+  // Cache: A cache is just a temporary data store that stores
+  // data in order to serve future requests for that data more quickly.
   const renderItem = ({item}) => (
     <View style={styles.item}>
       <View
