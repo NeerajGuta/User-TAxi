@@ -154,7 +154,7 @@ const Confirmlocation = ({navigation, route}) => {
       const config = {
         url: '/postbooking',
         method: 'post',
-        baseURL: 'http://192.168.1.19:8051/api/user',
+        baseURL: 'http://192.168.1.19:8051/api/v1/user',
         headers: {'Content-Type': 'application/json'},
         data: {
           userId: user?._id,
@@ -163,12 +163,12 @@ const Confirmlocation = ({navigation, route}) => {
           totalfare: totalCost,
           totalkm: pickupdistance,
           triptype: triptype,
-          paymenttype: '',
+          paymenttype: 'online',
           vehiclecat: cabdata?.vehicleType,
           extraKm: cabdata?.perkmfare,
           extraHours: cabdata?.perhrfare,
           discount: 0,
-          tax: bookingfee,
+          tax: cabdata?.gst,
           servicecharge: cabdata?.servicecharge,
           bookingfee: cabdata?.bookingfee,
         },
